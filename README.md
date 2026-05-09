@@ -1,6 +1,6 @@
 # Track Concursos Landing Page
 
-Landing page publica para apresentar o Track Concursos no GitHub Pages.
+Landing page pública para apresentar o Track Concursos no GitHub Pages.
 
 ## Rodando localmente
 
@@ -17,7 +17,7 @@ npm run build
 
 ## Catalogo de Editais Premium
 
-A pagina de Editais Premium le um catalogo JSON. Por padrao, ela usa:
+A página de Editais Premium lê um catálogo JSON. Por padrão, ela usa:
 
 ```txt
 public/data/catalog.sample.json
@@ -45,7 +45,7 @@ O arquivo `scripts/generate-catalog.mjs` le cada `manifest.json` e gera o `catal
 
 ## Importando a pasta "Editais Premium"
 
-Tambem existe um importador para o formato simples:
+Também existe um importador para o formato simples:
 
 ```txt
 Editais Premium/
@@ -55,7 +55,7 @@ Editais Premium/
     informacoes.txt
 ```
 
-O `.txt` pode ter titulo, cargo, banca, ano e descricao em texto livre. O script extrai o que conseguir e gera os cards automaticamente.
+O `.txt` pode ter título, cargo, banca, ano e descrição em texto livre. O script extrai o que conseguir e gera os cards automaticamente.
 
 Para importar a pasta local:
 

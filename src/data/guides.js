@@ -19,8 +19,8 @@ export const guideGroups = [
     ],
   },
   {
-    title: 'Organizacao de estudos',
-    description: 'Use progresso, questoes e simulados para tomar decisoes melhores.',
+    title: 'Organização de estudos',
+    description: 'Use progresso, questões e simulados para tomar decisões melhores.',
     icon: Layers3,
     guides: [
       { title: 'Como registrar horas e questões manualmente', slug: 'questoes', status: 'Em breve' },
@@ -35,12 +35,12 @@ export const guideGroups = [
     guides: [
       { title: 'Baixando um edital premium', slug: 'baixar-edital-premium', status: 'Em breve' },
       { title: 'Importando o arquivo JSON', slug: 'importar-json', status: 'Em breve' },
-      { title: 'Atualizando um edital ja existente', slug: 'atualizar-edital', status: 'Em breve' },
+      { title: 'Atualizando um edital já existente', slug: 'atualizar-edital', status: 'Em breve' },
     ],
   },
    {
-    title: 'Recursos avancados',
-    description: 'Espaco para guias futuros sobre ferramentas, automacoes e prompts com IA.',
+    title: 'Recursos avançados',
+    description: 'Espaço para guias futuros sobre ferramentas, automações e prompts com IA.',
     icon: Sparkles,
     guides: [
       { title: 'Como verticalizar automaticamente um edital com auxílio de uma IA', slug: 'links-sugeridos', status: 'Em breve' },
@@ -52,10 +52,10 @@ export const guideGroups = [
 
 export const guideDetails = {
   'requisitos-instalacao': {
-    category: 'Instalacao',
+    category: 'Instalação',
     title: 'Requisitos e link para download',
     description:
-      'Veja o que voce precisa para instalar o Track Concursos e onde baixar a versao mais recente do aplicativo.',
+      'Veja o que você precisa para instalar o Track Concursos e onde baixar a versão mais recente do aplicativo.',
     sections: [
       {
         title: 'Requisitos recomendados',
@@ -70,7 +70,7 @@ export const guideDetails = {
       {
         title: 'Como baixar',
         paragraphs: [
-          'Acesse a pagina de lançamentos do Track Concursos no GitHub para baixar a versão mais recente do aplicativo. Link: https://github.com/michel-softwares/track-concursos/releases',
+          'Acesse a página de lançamentos do Track Concursos no GitHub para baixar a versão mais recente do aplicativo. Link: https://github.com/michel-softwares/track-concursos/releases',
         ],
       },
     ],

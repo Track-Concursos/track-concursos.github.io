@@ -88,17 +88,17 @@ const fallbackRelease = {
 
 const appScreenshots = [
   { src: './assets/screenshots/screen-01.png', alt: 'Mural de concursos do Track Concursos' },
-  { src: './assets/screenshots/screen-02.png', alt: 'Tela de organizacao de concurso no Track Concursos' },
-  { src: './assets/screenshots/screen-03.png', alt: 'Tela de edital e topicos do Track Concursos' },
-  { src: './assets/screenshots/screen-04.png', alt: 'Estatisticas de estudos no Track Concursos' },
+  { src: './assets/screenshots/screen-02.png', alt: 'Tela de organização de concurso no Track Concursos' },
+  { src: './assets/screenshots/screen-03.png', alt: 'Tela de edital e tópicos do Track Concursos' },
+  { src: './assets/screenshots/screen-04.png', alt: 'Estatísticas de estudos no Track Concursos' },
   { src: './assets/screenshots/screen-05.png', alt: 'Painel de simulados do Track Concursos' },
   { src: './assets/screenshots/screen-06.png', alt: 'Ferramentas de estudo do Track Concursos' },
-  { src: './assets/screenshots/screen-07.png', alt: 'Configuracoes do Track Concursos' },
-  { src: './assets/screenshots/screen-08.png', alt: 'Fluxo de importacao do Track Concursos' },
+  { src: './assets/screenshots/screen-07.png', alt: 'Configurações do Track Concursos' },
+  { src: './assets/screenshots/screen-08.png', alt: 'Fluxo de importação do Track Concursos' },
 ];
 
 const navItems = [
-  { id: 'home', label: 'Inicio' },
+  { id: 'home', label: 'Início' },
   { id: 'guias', label: 'Guias' },
   { id: 'editais', label: 'Editais Premium' },
   { id: 'release', label: 'Release' },
@@ -162,7 +162,7 @@ function SiteHeader({ route, goTo, menuOpen, setMenuOpen, latestVersion }) {
         <img src="./assets/track-logo.png" alt="" />
         <span>Track Concursos</span>
       </a>
-      <nav className={menuOpen ? 'nav nav-open' : 'nav'} aria-label="Navegacao principal">
+      <nav className={menuOpen ? 'nav nav-open' : 'nav'} aria-label="Navegação principal">
         {navItems.map((item) => (
           <button
             key={item.id}
@@ -187,7 +187,7 @@ function HomePage({ goTo }) {
   useEffect(() => {
     fetch('https://api.github.com/repos/michel-softwares/track-concursos/releases/latest')
       .then((response) => {
-        if (!response.ok) throw new Error('Release indisponivel');
+        if (!response.ok) throw new Error('Release indisponível');
         return response.json();
       })
       .then((data) => {
@@ -243,7 +243,7 @@ function HomePage({ goTo }) {
         <div className="feature-grid">
           <FeatureCard icon={<Target />} title="Prioridade por concurso" text="Você pode criar vários cards de concursos e priorizar aqueles que você deseja focar no momento." />
           <FeatureCard icon={<MonitorCheck />} title="Gráficos de Estatísticas" text="Visualize suas estatísticas de estudos em gráficos claros e intuitivos para uma análise pós-prova precisa ou durante seus estudos." />
-          <FeatureCard icon={<FileJson />} title="Importacao instântanea de Editais" text="Importe editais prontos já organizados para iniciar os estudos mais rapidamente." />
+          <FeatureCard icon={<FileJson />} title="Importação instantânea de Editais" text="Importe editais prontos já organizados para iniciar os estudos mais rapidamente." />
           <FeatureCard icon={<ShieldCheck />} title="Backup e continuidade" text="Você pode criar perfis diferentes e salvar seu progresso individualmente." />
         </div>
       </section>
@@ -257,8 +257,8 @@ function HomePage({ goTo }) {
           </p>
           <ul className="check-list">
             <li><CheckCircle2 size={18} /> Cards por concurso com banca, cargo, progresso e outras informações.</li>
-            <li><CheckCircle2 size={18} /> Estatisticas gerais para acompanhar evolucao.</li>
-            <li><CheckCircle2 size={18} /> Importacao de Editais Prontos para começar a estudar rapidamente.</li>
+            <li><CheckCircle2 size={18} /> Estatísticas gerais para acompanhar evolução.</li>
+            <li><CheckCircle2 size={18} /> Importação de Editais Prontos para começar a estudar rapidamente.</li>
           </ul>
         </div>
         <ScreenshotCarousel screenshots={appScreenshots} />
@@ -324,7 +324,7 @@ function GuidesPage() {
       <SectionHeading
         eyebrow="Central de ajuda"
         title="Guias e tutoriais do Track Concursos"
-        text="A estrutura ja esta organizada para voce preencher cada guia depois, mantendo uma experiencia limpa para o usuario final."
+        text="A estrutura já está organizada para você preencher cada guia depois, mantendo uma experiência limpa para o usuário final."
       />
       <div className="guide-layout">
         {guideGroups.map((group) => (
@@ -357,7 +357,7 @@ function GuideDetail({ guide }) {
   useEffect(() => {
     fetch('https://api.github.com/repos/michel-softwares/track-concursos/releases/latest')
       .then((response) => {
-        if (!response.ok) throw new Error('Release indisponivel');
+        if (!response.ok) throw new Error('Release indisponível');
         return response.json();
       })
       .then((data) => {
@@ -491,7 +491,7 @@ function ScreenshotCarousel({ screenshots }) {
       </div>
       {lightboxOpen && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label="Prints do Track Concursos em tela cheia">
-          <button className="lightbox-backdrop" onClick={() => setLightboxOpen(false)} aria-label="Fechar visualizacao" />
+            <button className="lightbox-backdrop" onClick={() => setLightboxOpen(false)} aria-label="Fechar visualização" />
           <div className="lightbox-content">
             <button className="lightbox-close" onClick={() => setLightboxOpen(false)} aria-label="Fechar">
               <X size={22} />
@@ -516,14 +516,14 @@ function ScreenshotCarousel({ screenshots }) {
 function PremiumEditalsPage() {
   const [catalog, setCatalog] = useState([]);
   const [query, setQuery] = useState('');
-  const [status, setStatus] = useState('Carregando catalogo...');
+    const [status, setStatus] = useState('Carregando catálogo...');
 
   useEffect(() => {
     const freshCatalogUrl = withCacheBust(catalogUrl);
 
     fetch(freshCatalogUrl, { cache: 'no-store' })
       .then((response) => {
-        if (!response.ok) throw new Error('Catalogo indisponivel');
+        if (!response.ok) throw new Error('Catálogo indisponível');
         return response.json();
       })
       .then((data) => {
@@ -533,14 +533,14 @@ function PremiumEditalsPage() {
       .catch(() => {
         fetch(withCacheBust(localCatalogUrl), { cache: 'no-store' })
           .then((response) => {
-            if (!response.ok) throw new Error('Catalogo local indisponivel');
+            if (!response.ok) throw new Error('Catálogo local indisponível');
             return response.json();
           })
           .then((data) => {
             setCatalog((data.editais || []).map((item) => normalizeCatalogItem(item, catalogUrl, data.atualizadoEm)));
             setStatus('');
           })
-          .catch(() => setStatus('Nao foi possivel carregar o catalogo agora.'));
+          .catch(() => setStatus('Não foi possível carregar o catálogo agora.'));
       });
   }, []);
 
@@ -561,7 +561,7 @@ function PremiumEditalsPage() {
     <section className="page-section premium-page">
       <div className="premium-hero">
         <div>
-          <p className="eyebrow">Biblioteca publica</p>
+          <p className="eyebrow">Biblioteca pública</p>
           <h1>Pesquise e baixe Editais Premium prontos para importar.</h1>
           <p>
             Aqui você encontrará Editais Premium Gratuitos, é só baixar o .JSON e importar no seu Track Concursos!
@@ -579,7 +579,7 @@ function PremiumEditalsPage() {
         <input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Pesquisar por concurso, orgao, banca, cargo ou tag"
+          placeholder="Pesquisar por concurso, órgão, banca, cargo ou tag"
           aria-label="Pesquisar editais premium"
         />
       </div>
@@ -619,7 +619,7 @@ function ReleasePage() {
   useEffect(() => {
     fetch('https://api.github.com/repos/michel-softwares/track-concursos/releases/latest', { cache: 'no-store' })
       .then((response) => {
-        if (!response.ok) throw new Error('Release indisponivel');
+        if (!response.ok) throw new Error('Release indisponível');
         return response.json();
       })
       .then((data) => {
@@ -637,7 +637,7 @@ function ReleasePage() {
       })
       .catch(() => {
         setRelease(fallbackRelease);
-        setStatus('Mostrando informacoes salvas localmente.');
+        setStatus('Mostrando informações salvas localmente.');
       });
   }, []);
 
@@ -649,10 +649,10 @@ function ReleasePage() {
     <section className="page-section release-page">
       <div className="release-hero">
         <div>
-          <p className="eyebrow">Ultima versao</p>
+          <p className="eyebrow">Última versão</p>
           <h1>{release.name || release.version}</h1>
           <p>
-            Informacoes sincronizadas automaticamente com o release mais recente publicado no GitHub.
+            Informações sincronizadas automaticamente com o release mais recente publicado no GitHub.
           </p>
         </div>
         <div className="release-download-card">
@@ -731,7 +731,7 @@ function AssetCard({ asset, primary = false }) {
 
 async function downloadCatalogFile(item) {
   const response = await fetch(item.arquivo, { cache: 'no-store' });
-  if (!response.ok) throw new Error('Arquivo indisponivel');
+  if (!response.ok) throw new Error('Arquivo indisponível');
 
   const blob = await response.blob();
   const objectUrl = URL.createObjectURL(blob);
@@ -788,7 +788,7 @@ function normalizeSearchText(value) {
 }
 
 function formatReleaseDate(value) {
-  if (!value) return 'Data indisponivel';
+  if (!value) return 'Data indisponível';
   return new Intl.DateTimeFormat('pt-BR', {
     day: '2-digit',
     month: 'long',
@@ -797,7 +797,7 @@ function formatReleaseDate(value) {
 }
 
 function formatBytes(value = 0) {
-  if (!value) return 'Tamanho indisponivel';
+  if (!value) return 'Tamanho indisponível';
   const mb = value / 1024 / 1024;
   return `${mb.toFixed(1)} MB`;
 }
