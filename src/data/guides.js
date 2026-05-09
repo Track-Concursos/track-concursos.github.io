@@ -45,7 +45,7 @@ export const guideGroups = [
     guides: [
       { title: 'Como verticalizar automaticamente um edital com auxílio de uma IA', slug: 'links-sugeridos', status: 'Em breve' },
       { title: 'Como exportar um Edital feito por você', slug: 'catalogos-drive', status: 'Em breve' },
-      { title: 'Melhores praticas de revisao', slug: 'revisao', status: 'Em breve' },
+      { title: 'Linkar automaticamente todos os seus livros PDFs nos tópicos', slug: 'revisao', status: 'Em breve' },
     ],
   },
 ];

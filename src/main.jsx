@@ -8,6 +8,7 @@ import {
   ChevronRight,
   Download,
   FileJson,
+  FileText,
   Github,
   GraduationCap,
   Layers3,
@@ -22,6 +23,47 @@ import {
 } from 'lucide-react';
 import './styles.css';
 import { guideDetails, guideGroups } from './data/guides.js';
+
+function getYouTubeEmbedUrl(url) {
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+    /^([a-zA-Z0-9_-]{11})$/,
+  ];
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match) return `https://www.youtube-nocookie.com/embed/${match[1]}`;
+  }
+  return null;
+}
+
+const urlRegex = /https?:\/\/[^\s<]+/g;
+
+function linkifyText(text) {
+  const parts = [];
+  let lastIndex = 0;
+  let match;
+  const regex = new RegExp(urlRegex.source, 'g');
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+    parts.push({ url: match[0], start: match.index, end: match.index + match[0].length });
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+  return parts.length === 1 && typeof parts[0] === 'string' ? text : parts;
+}
+
+function renderContent(value) {
+  if (typeof value !== 'string') return value;
+  const linked = linkifyText(value);
+  if (typeof linked === 'string') return linked;
+  return linked.map((part, i) =>
+    typeof part === 'string' ? part : <a key={i} className="content-link" href={part.url} target="_blank" rel="noreferrer">{part.url}</a>
+  );
+}
 
 const catalogUrl =
   import.meta.env.VITE_EDITAIS_CATALOG_URL ||
@@ -75,11 +117,22 @@ function getGuideSlug() {
 function App() {
   const [route, setRoute] = useState(getRoute);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [latestVersion, setLatestVersion] = useState(fallbackRelease.version);
 
   useEffect(() => {
     const onHashChange = () => setRoute(getRoute());
     window.addEventListener('hashchange', onHashChange);
     return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  useEffect(() => {
+    fetch('https://api.github.com/repos/michel-softwares/track-concursos/releases/latest')
+      .then((response) => {
+        if (!response.ok) throw new Error();
+        return response.json();
+      })
+      .then((data) => setLatestVersion(data.tag_name || fallbackRelease.version))
+      .catch(() => {});
   }, []);
 
   const goTo = (id) => {
@@ -90,19 +143,19 @@ function App() {
 
   return (
     <div className="app-shell">
-      <SiteHeader route={route} goTo={goTo} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <SiteHeader route={route} goTo={goTo} menuOpen={menuOpen} setMenuOpen={setMenuOpen} latestVersion={latestVersion} />
       <main>
         {route === 'guias' && <GuidesPage />}
         {route === 'editais' && <PremiumEditalsPage />}
         {route === 'release' && <ReleasePage />}
         {route !== 'guias' && route !== 'editais' && route !== 'release' && <HomePage goTo={goTo} />}
       </main>
-      <Footer goTo={goTo} />
+      <Footer goTo={goTo} latestVersion={latestVersion} />
     </div>
   );
 }
 
-function SiteHeader({ route, goTo, menuOpen, setMenuOpen }) {
+function SiteHeader({ route, goTo, menuOpen, setMenuOpen, latestVersion }) {
   return (
     <header className="site-header">
       <a className="brand" href="#/home" aria-label="Track Concursos">
@@ -116,7 +169,7 @@ function SiteHeader({ route, goTo, menuOpen, setMenuOpen }) {
             className={route === item.id ? 'nav-link active' : 'nav-link'}
             onClick={() => goTo(item.id)}
           >
-            {item.label}
+            {item.id === 'release' ? `Track Concursos ${latestVersion}` : item.label}
           </button>
         ))}
       </nav>
@@ -129,6 +182,7 @@ function SiteHeader({ route, goTo, menuOpen, setMenuOpen }) {
 
 function HomePage({ goTo }) {
   const [release, setRelease] = useState(fallbackRelease);
+  const [starLightboxOpen, setStarLightboxOpen] = useState(false);
 
   useEffect(() => {
     fetch('https://api.github.com/repos/michel-softwares/track-concursos/releases/latest')
@@ -170,6 +224,9 @@ function HomePage({ goTo }) {
             <button className="secondary-button" onClick={() => goTo('editais')}>
               Editais Prontos <FileJson size={18} />
             </button>
+            <button className="secondary-button release-nav-button" onClick={() => goTo('release')}>
+              Track Concursos {release.version} <FileText size={18} />
+            </button>
           </div>
         </div>
         <div className="hero-visual">
@@ -210,7 +267,7 @@ function HomePage({ goTo }) {
       <section className="github-star-section">
         <div className="github-star-copy">
           <p className="eyebrow">Apoie o projeto</p>
-          <h2>Se o Track Concursos te ajuda, uma estrela no GitHub ajuda demais.</h2>
+          <h2>Se gostou do Track Concursos, dê uma estrela no Github!</h2>
           <p>
             O projeto é gratuito e público. Dar uma estrela aumenta a visibilidade,
             mostra que a ferramenta está sendo útil e incentiva novas melhorias.
@@ -221,18 +278,27 @@ function HomePage({ goTo }) {
             target="_blank"
             rel="noreferrer"
           >
-            Dar estrela no GitHub <Github size={18} />
+            Acessar página do projeto no GitHub <Github size={18} />
           </a>
         </div>
-        <a
+        <button
           className="github-star-preview"
-          href="https://github.com/michel-softwares/track-concursos"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="Abrir repositório do Track Concursos no GitHub"
+          onClick={() => setStarLightboxOpen(true)}
+          aria-label="Ver imagem em tela cheia"
         >
           <img src="./assets/github-star.png" alt="Botão de estrela do Track Concursos no GitHub" />
-        </a>
+        </button>
+        {starLightboxOpen && (
+          <div className="lightbox" role="dialog" aria-modal="true" aria-label="GitHub Star em tela cheia">
+            <button className="lightbox-backdrop" onClick={() => setStarLightboxOpen(false)} aria-label="Fechar" />
+            <div className="lightbox-content">
+              <button className="lightbox-close" onClick={() => setStarLightboxOpen(false)} aria-label="Fechar">
+                <X size={22} />
+              </button>
+              <img src="./assets/github-star.png" alt="Botão de estrela do Track Concursos no GitHub" />
+            </div>
+          </div>
+        )}
       </section>
 
     </>
@@ -274,7 +340,7 @@ function GuidesPage() {
               {group.guides.map((guide) => (
                 <a className="guide-item" href={`#/guias?guia=${guide.slug}`} key={guide.slug}>
                   <span>{guide.title}</span>
-                  <small>{guide.status}</small>
+                  <small className={`badge ${guide.status === 'Pronto' ? 'badge-pronto' : 'badge-em-breve'}`}>{guide.status}</small>
                 </a>
               ))}
             </div>
@@ -286,6 +352,24 @@ function GuidesPage() {
 }
 
 function GuideDetail({ guide }) {
+  const [release, setRelease] = useState(fallbackRelease);
+
+  useEffect(() => {
+    fetch('https://api.github.com/repos/michel-softwares/track-concursos/releases/latest')
+      .then((response) => {
+        if (!response.ok) throw new Error('Release indisponivel');
+        return response.json();
+      })
+      .then((data) => {
+        const exeAsset = (data.assets || []).find((asset) => asset.name.toLowerCase().endsWith('.exe'));
+        setRelease({
+          version: data.tag_name || fallbackRelease.version,
+          downloadUrl: exeAsset?.browser_download_url || data.html_url || fallbackRelease.downloadUrl,
+        });
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <section className="page-section guide-detail-page">
       <a className="back-link" href="#/guias">
@@ -300,14 +384,35 @@ function GuideDetail({ guide }) {
           {guide.sections.map((section) => (
             <section key={section.title}>
               <h2>{section.title}</h2>
-              {section.paragraphs?.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+              {section.paragraphs?.map((paragraph) => <p key={paragraph}>{renderContent(paragraph)}</p>)}
               {section.items && (
                 <ul>
-                  {section.items.map((item) => <li key={item}>{item}</li>)}
+                  {section.items.map((item) => <li key={item}>{renderContent(item)}</li>)}
                 </ul>
               )}
+              {section.video && (() => {
+                const embedUrl = getYouTubeEmbedUrl(section.video);
+                return embedUrl ? (
+                  <div className="video-embed">
+                    <iframe src={embedUrl} title={section.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy" />
+                  </div>
+                ) : null;
+              })()}
             </section>
           ))}
+        </div>
+
+        <div className="guide-download-cta">
+          <p className="eyebrow">Pronto para começar?</p>
+          <h2>Baixe o Track Concursos</h2>
+          <p>Clique no botão abaixo para baixar a versão mais recente do aplicativo.</p>
+          <a className="primary-button download-release-button" href={release.downloadUrl}>
+            <span>
+              Baixe a versão mais atual
+              <small>{release.version}</small>
+            </span>
+            <Download size={18} />
+          </a>
         </div>
       </article>
     </section>
@@ -571,10 +676,30 @@ function ReleasePage() {
             {releaseSections.map((section) => (
               <section key={section.title}>
                 <h3>{section.title}</h3>
-                {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                {section.paragraphs.map((paragraph) => {
+                  const embedUrl = getYouTubeEmbedUrl(paragraph.trim());
+                  return embedUrl ? (
+                    <div key={paragraph} className="video-embed">
+                      <iframe src={embedUrl} title={section.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy" />
+                    </div>
+                  ) : (
+                    <p key={paragraph}>{renderContent(paragraph)}</p>
+                  );
+                })}
                 {section.items.length > 0 && (
                   <ul>
-                    {section.items.map((item) => <li key={item}>{item}</li>)}
+                    {section.items.map((item) => {
+                      const embedUrl = getYouTubeEmbedUrl(item.trim());
+                      return embedUrl ? (
+                        <li key={item} style={{ listStyle: 'none', paddingLeft: 0 }}>
+                          <div className="video-embed">
+                            <iframe src={embedUrl} title={section.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy" />
+                          </div>
+                        </li>
+                      ) : (
+                        <li key={item}>{renderContent(item)}</li>
+                      );
+                    })}
                   </ul>
                 )}
               </section>
@@ -758,17 +883,18 @@ function Step({ number, title, text }) {
   );
 }
 
-function Footer({ goTo }) {
+function Footer({ goTo, latestVersion }) {
   return (
     <footer className="footer">
-      <div>
+      <div className="footer-brand">
         <strong>Track Concursos</strong>
-        <p>Projeto publico para concurseiros organizarem estudo, progresso e editais.</p>
+        <p>Esse projeto é gratuito para uso pessoal, sendo proibida sua comercialização sem minha autorização.</p>
       </div>
-      <div className="footer-links">
-        {navItems.map((item) => (
-          <button key={item.id} onClick={() => goTo(item.id)}>{item.label}</button>
-        ))}
+      <div className="footer-info">
+        <span>© 2026 Todos os direitos reservados</span>
+        <a className="footer-michel-logo" href="https://github.com/michel-softwares" target="_blank" rel="noreferrer" aria-label="GitHub da Michel Softwares">
+          <img src="./assets/michel-softwares.png" alt="Michel Softwares" />
+        </a>
       </div>
     </footer>
   );
