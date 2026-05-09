@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+.env.local
+
+# Arquivos-fonte locais ja copiados para public/assets
+/*.png
+/catalog.json
+/RELEASE_NOTES_*.md

@@ -1,0 +1,750 @@
+import React, { useEffect, useMemo, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import {
+  ArrowLeft,
+  BookOpenCheck,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  FileJson,
+  Github,
+  GraduationCap,
+  Layers3,
+  LibraryBig,
+  Menu,
+  MonitorCheck,
+  Search,
+  ShieldCheck,
+  Sparkles,
+  Target,
+  X,
+} from 'lucide-react';
+import './styles.css';
+import { guideDetails, guideGroups } from './data/guides.js';
+
+const catalogUrl =
+  import.meta.env.VITE_EDITAIS_CATALOG_URL ||
+  'https://raw.githubusercontent.com/michel-softwares/Editais-Premium/main/catalog.json';
+const localCatalogUrl = './data/catalog.sample.json';
+const fallbackRelease = {
+  version: 'v1.0.2',
+  name: 'Track Concursos v1.0.2',
+  downloadUrl: 'https://github.com/michel-softwares/track-concursos/releases/download/v1.0.2/TrackConcursos-Setup-v1.0.2.exe',
+  htmlUrl: 'https://github.com/michel-softwares/track-concursos/releases/tag/v1.0.2',
+  publishedAt: '2026-05-07T20:10:49Z',
+  body: 'Atualização pequena focada em manutenção, novos fluxos de exportação, grupos de concursos, melhorias nos cronômetros, Painel da Prova e correções.',
+  assets: [
+    {
+      name: 'TrackConcursos-Setup-v1.0.2.exe',
+      browser_download_url: 'https://github.com/michel-softwares/track-concursos/releases/download/v1.0.2/TrackConcursos-Setup-v1.0.2.exe',
+      size: 29321921,
+      download_count: 0,
+    },
+  ],
+};
+
+const appScreenshots = [
+  { src: './assets/screenshots/screen-01.png', alt: 'Mural de concursos do Track Concursos' },
+  { src: './assets/screenshots/screen-02.png', alt: 'Tela de organizacao de concurso no Track Concursos' },
+  { src: './assets/screenshots/screen-03.png', alt: 'Tela de edital e topicos do Track Concursos' },
+  { src: './assets/screenshots/screen-04.png', alt: 'Estatisticas de estudos no Track Concursos' },
+  { src: './assets/screenshots/screen-05.png', alt: 'Painel de simulados do Track Concursos' },
+  { src: './assets/screenshots/screen-06.png', alt: 'Ferramentas de estudo do Track Concursos' },
+  { src: './assets/screenshots/screen-07.png', alt: 'Configuracoes do Track Concursos' },
+  { src: './assets/screenshots/screen-08.png', alt: 'Fluxo de importacao do Track Concursos' },
+];
+
+const navItems = [
+  { id: 'home', label: 'Inicio' },
+  { id: 'guias', label: 'Guias' },
+  { id: 'editais', label: 'Editais Premium' },
+  { id: 'release', label: 'Release' },
+];
+
+function getRoute() {
+  return (window.location.hash.replace('#/', '') || 'home').split('?')[0];
+}
+
+function getGuideSlug() {
+  const hash = window.location.hash.replace('#/guias', '');
+  const params = new URLSearchParams(hash.startsWith('?') ? hash : '');
+  return params.get('guia');
+}
+
+function App() {
+  const [route, setRoute] = useState(getRoute);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const onHashChange = () => setRoute(getRoute());
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  const goTo = (id) => {
+    window.location.hash = `/${id}`;
+    setMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <div className="app-shell">
+      <SiteHeader route={route} goTo={goTo} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <main>
+        {route === 'guias' && <GuidesPage />}
+        {route === 'editais' && <PremiumEditalsPage />}
+        {route === 'release' && <ReleasePage />}
+        {route !== 'guias' && route !== 'editais' && route !== 'release' && <HomePage goTo={goTo} />}
+      </main>
+      <Footer goTo={goTo} />
+    </div>
+  );
+}
+
+function SiteHeader({ route, goTo, menuOpen, setMenuOpen }) {
+  return (
+    <header className="site-header">
+      <a className="brand" href="#/home" aria-label="Track Concursos">
+        <img src="./assets/track-logo.png" alt="" />
+        <span>Track Concursos</span>
+      </a>
+      <nav className={menuOpen ? 'nav nav-open' : 'nav'} aria-label="Navegacao principal">
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            className={route === item.id ? 'nav-link active' : 'nav-link'}
+            onClick={() => goTo(item.id)}
+          >
+            {item.label}
+          </button>
+        ))}
+      </nav>
+      <button className="icon-button menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Abrir menu">
+        {menuOpen ? <X size={20} /> : <Menu size={20} />}
+      </button>
+    </header>
+  );
+}
+
+function HomePage({ goTo }) {
+  const [release, setRelease] = useState(fallbackRelease);
+
+  useEffect(() => {
+    fetch('https://api.github.com/repos/michel-softwares/track-concursos/releases/latest')
+      .then((response) => {
+        if (!response.ok) throw new Error('Release indisponivel');
+        return response.json();
+      })
+      .then((data) => {
+        const exeAsset = (data.assets || []).find((asset) => asset.name.toLowerCase().endsWith('.exe'));
+        setRelease({
+          version: data.tag_name || fallbackRelease.version,
+          downloadUrl: exeAsset?.browser_download_url || data.html_url || fallbackRelease.downloadUrl,
+        });
+      })
+      .catch(() => {});
+  }, []);
+
+  return (
+    <>
+      <section className="hero-section">
+        <div className="hero-copy">
+          <p className="eyebrow">Organizador de estudos 100% gratuito</p>
+          <h1>Organize seus estudos com o Track Concursos!</h1>
+          <p className="hero-text">
+            O Track Concursos veio para facilitar a vida dos concurseiros que gostam de organizar seus estudos por planilhas.
+            Com ele é possível verticalizar editais automaticamente; cadastrar todas as informações do Edital; configurar um painel de prova que lhe mostrará a nota real dos seus simulados; linkar PDFs, cadernos de questões, videoaulas em cada tópico para iniciar sua sessão de estudos com um clique. Também é possível analisar gráficos com suas estatísticas de estudos e muito mais! 
+          </p>
+          <div className="hero-actions">
+            <a className="primary-button download-release-button" href={release.downloadUrl}>
+              <span>
+                Baixe a versão mais atual
+                <small>{release.version}</small>
+              </span>
+              <Download size={18} />
+            </a>
+            <button className="secondary-button" onClick={() => goTo('guias')}>
+              Ver Guias <BookOpenCheck size={18} />
+            </button>
+            <button className="secondary-button" onClick={() => goTo('editais')}>
+              Editais Prontos <FileJson size={18} />
+            </button>
+          </div>
+        </div>
+        <div className="hero-visual">
+          <img src="./assets/hero-photo.png" alt="Material visual do Track Concursos" />
+        </div>
+      </section>
+
+      <section className="feature-band">
+        <SectionHeading
+          eyebrow="Por que usar"
+          title="Feito para registrar toda a sua jornada de estudos até a sonhada aprovação."
+          text="Chega de perder tempo configurando planilhas, organizando pastas com editais e planilhas avulsas para cada concurso que você realiza, o Track Concursos foi pensado para fazer você aposentar as planilhas de vez e reunir todas as informações e estatísticas dos seus estudos em um lugar só."
+        />
+        <div className="feature-grid">
+          <FeatureCard icon={<Target />} title="Prioridade por concurso" text="Você pode criar vários cards de concursos e priorizar aqueles que você deseja focar no momento." />
+          <FeatureCard icon={<MonitorCheck />} title="Gráficos de Estatísticas" text="Visualize suas estatísticas de estudos em gráficos claros e intuitivos para uma análise pós-prova precisa ou durante seus estudos." />
+          <FeatureCard icon={<FileJson />} title="Importacao instântanea de Editais" text="Importe editais prontos já organizados para iniciar os estudos mais rapidamente." />
+          <FeatureCard icon={<ShieldCheck />} title="Backup e continuidade" text="Você pode criar perfis diferentes e salvar seu progresso individualmente." />
+        </div>
+      </section>
+
+      <section className="showcase-section">
+        <div className="showcase-copy">
+          <p className="eyebrow">Interface real do app</p>
+          <h2>Veja como o Track Concursos funciona</h2>
+          <p>
+            Registre concursos já realizados; linke PDFs, videoaulas e cadernos de questões, localizados no seu PC ou em um Drive do Google, em cada tópico e muito mais.
+          </p>
+          <ul className="check-list">
+            <li><CheckCircle2 size={18} /> Cards por concurso com banca, cargo, progresso e outras informações.</li>
+            <li><CheckCircle2 size={18} /> Estatisticas gerais para acompanhar evolucao.</li>
+            <li><CheckCircle2 size={18} /> Importacao de Editais Prontos para começar a estudar rapidamente.</li>
+          </ul>
+        </div>
+        <ScreenshotCarousel screenshots={appScreenshots} />
+      </section>
+
+
+    </>
+  );
+}
+
+function GuidesPage() {
+  const [guideSlug, setGuideSlug] = useState(getGuideSlug);
+  const selectedGuide = guideSlug ? guideDetails[guideSlug] : null;
+
+  useEffect(() => {
+    const onHashChange = () => setGuideSlug(getGuideSlug());
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  if (selectedGuide) {
+    return <GuideDetail guide={selectedGuide} />;
+  }
+
+  return (
+    <section className="page-section">
+      <SectionHeading
+        eyebrow="Central de ajuda"
+        title="Guias e tutoriais do Track Concursos"
+        text="A estrutura ja esta organizada para voce preencher cada guia depois, mantendo uma experiencia limpa para o usuario final."
+      />
+      <div className="guide-layout">
+        {guideGroups.map((group) => (
+          <article className="guide-group" key={group.title}>
+            <div className="guide-group-header">
+              <group.icon size={22} />
+              <div>
+                <h2>{group.title}</h2>
+                <p>{group.description}</p>
+              </div>
+            </div>
+            <div className="guide-list">
+              {group.guides.map((guide) => (
+                <a className="guide-item" href={`#/guias?guia=${guide.slug}`} key={guide.slug}>
+                  <span>{guide.title}</span>
+                  <small>{guide.status}</small>
+                </a>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function GuideDetail({ guide }) {
+  return (
+    <section className="page-section guide-detail-page">
+      <a className="back-link" href="#/guias">
+        <ArrowLeft size={18} /> Voltar para guias
+      </a>
+      <article className="guide-article">
+        <p className="eyebrow">{guide.category}</p>
+        <h1>{guide.title}</h1>
+        <p className="guide-lead">{guide.description}</p>
+
+        <div className="guide-article-body">
+          {guide.sections.map((section) => (
+            <section key={section.title}>
+              <h2>{section.title}</h2>
+              {section.paragraphs?.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+              {section.items && (
+                <ul>
+                  {section.items.map((item) => <li key={item}>{item}</li>)}
+                </ul>
+              )}
+            </section>
+          ))}
+        </div>
+      </article>
+    </section>
+  );
+}
+
+function ScreenshotCarousel({ screenshots }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % screenshots.length);
+    }, 5500);
+
+    return () => window.clearInterval(timer);
+  }, [screenshots.length]);
+
+  useEffect(() => {
+    if (!lightboxOpen) return undefined;
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setLightboxOpen(false);
+      if (event.key === 'ArrowLeft') previous();
+      if (event.key === 'ArrowRight') next();
+    };
+
+    document.body.classList.add('modal-open');
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.classList.remove('modal-open');
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [lightboxOpen]);
+
+  const previous = () => {
+    setActiveIndex((current) => (current === 0 ? screenshots.length - 1 : current - 1));
+  };
+
+  const next = () => {
+    setActiveIndex((current) => (current + 1) % screenshots.length);
+  };
+
+  return (
+    <div className="screenshot-carousel" aria-label="Prints reais do Track Concursos">
+      <div className="carousel-viewport">
+        {screenshots.map((screenshot, index) => (
+          <button
+            key={screenshot.src}
+            className={index === activeIndex ? 'carousel-slide active' : 'carousel-slide'}
+            onClick={() => setLightboxOpen(true)}
+            aria-label="Abrir print em tela cheia"
+          >
+            <img src={screenshot.src} alt={screenshot.alt} />
+          </button>
+        ))}
+      </div>
+      <div className="carousel-controls">
+        <button className="carousel-arrow" onClick={previous} aria-label="Print anterior">
+          <ChevronLeft size={20} />
+        </button>
+        <div className="carousel-dots" aria-label="Selecionar print">
+          {screenshots.map((screenshot, index) => (
+            <button
+              key={screenshot.src}
+              className={index === activeIndex ? 'carousel-dot active' : 'carousel-dot'}
+              onClick={() => setActiveIndex(index)}
+              aria-label={`Mostrar print ${index + 1}`}
+            />
+          ))}
+        </div>
+        <button className="carousel-arrow" onClick={next} aria-label="Proximo print">
+          <ChevronRight size={20} />
+        </button>
+      </div>
+      {lightboxOpen && (
+        <div className="lightbox" role="dialog" aria-modal="true" aria-label="Prints do Track Concursos em tela cheia">
+          <button className="lightbox-backdrop" onClick={() => setLightboxOpen(false)} aria-label="Fechar visualizacao" />
+          <div className="lightbox-content">
+            <button className="lightbox-close" onClick={() => setLightboxOpen(false)} aria-label="Fechar">
+              <X size={22} />
+            </button>
+            <button className="lightbox-arrow left" onClick={previous} aria-label="Print anterior">
+              <ChevronLeft size={26} />
+            </button>
+            <img src={screenshots[activeIndex].src} alt={screenshots[activeIndex].alt} />
+            <button className="lightbox-arrow right" onClick={next} aria-label="Proximo print">
+              <ChevronRight size={26} />
+            </button>
+            <div className="lightbox-counter">
+              {activeIndex + 1} / {screenshots.length}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PremiumEditalsPage() {
+  const [catalog, setCatalog] = useState([]);
+  const [query, setQuery] = useState('');
+  const [status, setStatus] = useState('Carregando catalogo...');
+
+  useEffect(() => {
+    const freshCatalogUrl = withCacheBust(catalogUrl);
+
+    fetch(freshCatalogUrl, { cache: 'no-store' })
+      .then((response) => {
+        if (!response.ok) throw new Error('Catalogo indisponivel');
+        return response.json();
+      })
+      .then((data) => {
+        setCatalog((data.editais || []).map((item) => normalizeCatalogItem(item, freshCatalogUrl, data.atualizadoEm)));
+        setStatus('');
+      })
+      .catch(() => {
+        fetch(withCacheBust(localCatalogUrl), { cache: 'no-store' })
+          .then((response) => {
+            if (!response.ok) throw new Error('Catalogo local indisponivel');
+            return response.json();
+          })
+          .then((data) => {
+            setCatalog((data.editais || []).map((item) => normalizeCatalogItem(item, catalogUrl, data.atualizadoEm)));
+            setStatus('');
+          })
+          .catch(() => setStatus('Nao foi possivel carregar o catalogo agora.'));
+      });
+  }, []);
+
+  const filtered = useMemo(() => {
+    const normalized = normalizeSearchText(query);
+    if (!normalized) return catalog;
+    return catalog.filter((item) => {
+      const haystack = [item.titulo, item.orgao, item.banca, item.cargo, item.descricao, item.arquivoNome, ...(item.tags || [])]
+        .join(' ')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+      return haystack.includes(normalized);
+    });
+  }, [catalog, query]);
+
+  return (
+    <section className="page-section premium-page">
+      <div className="premium-hero">
+        <div>
+          <p className="eyebrow">Biblioteca publica</p>
+          <h1>Pesquise e baixe Editais Premium prontos para importar.</h1>
+          <p>
+            Aqui você encontrará Editais Premium Gratuitos, é só baixar o .JSON e importar no seu Track Concursos!
+          </p>
+        </div>
+        <div className="repo-card">
+          <Github size={24} />
+          <strong>Editais Premium gratuitos</strong>
+          <span>esses editais são organizados por mim e disponibilizados gratuitamente, se não encontrou um específico entre em contato comigo e peça um Edital Premium!</span>
+        </div>
+      </div>
+
+      <div className="search-panel">
+        <Search size={20} />
+        <input
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Pesquisar por concurso, orgao, banca, cargo ou tag"
+          aria-label="Pesquisar editais premium"
+        />
+      </div>
+
+      {status && <p className="catalog-status">{status}</p>}
+      <div className="results-toolbar">
+        <span>{filtered.length} editais encontrados</span>
+        <small>Origem: <code>{catalogUrl}</code></small>
+      </div>
+      <div className="editals-grid">
+        {filtered.map((item) => (
+          <article className="edital-card" key={item.id}>
+            <img src={item.imagem} alt={`Capa do edital ${item.titulo}`} />
+            <div className="edital-content">
+              <div className="edital-topline">
+                <span>{item.banca}</span>
+                <span>{item.ano}</span>
+              </div>
+              <h2>{item.titulo}</h2>
+              <p>{item.cargo}</p>
+              {item.descricao && <p className="edital-description">{item.descricao}</p>}
+              <button className="download-button" onClick={() => downloadCatalogFile(item)}>
+                Baixar JSON <Download size={17} />
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ReleasePage() {
+  const [release, setRelease] = useState(fallbackRelease);
+  const [status, setStatus] = useState('Carregando release mais recente...');
+
+  useEffect(() => {
+    fetch('https://api.github.com/repos/michel-softwares/track-concursos/releases/latest', { cache: 'no-store' })
+      .then((response) => {
+        if (!response.ok) throw new Error('Release indisponivel');
+        return response.json();
+      })
+      .then((data) => {
+        const exeAsset = (data.assets || []).find((asset) => asset.name.toLowerCase().endsWith('.exe'));
+        setRelease({
+          version: data.tag_name || fallbackRelease.version,
+          name: data.name || data.tag_name || fallbackRelease.name,
+          downloadUrl: exeAsset?.browser_download_url || data.html_url || fallbackRelease.downloadUrl,
+          htmlUrl: data.html_url || fallbackRelease.htmlUrl,
+          publishedAt: data.published_at || fallbackRelease.publishedAt,
+          body: data.body || fallbackRelease.body,
+          assets: data.assets?.length ? data.assets : fallbackRelease.assets,
+        });
+        setStatus('');
+      })
+      .catch(() => {
+        setRelease(fallbackRelease);
+        setStatus('Mostrando informacoes salvas localmente.');
+      });
+  }, []);
+
+  const releaseSections = useMemo(() => parseReleaseNotes(release.body), [release.body]);
+  const installer = release.assets?.find((asset) => asset.name.toLowerCase().endsWith('.exe'));
+  const extraAssets = (release.assets || []).filter((asset) => asset !== installer);
+
+  return (
+    <section className="page-section release-page">
+      <div className="release-hero">
+        <div>
+          <p className="eyebrow">Ultima versao</p>
+          <h1>{release.name || release.version}</h1>
+          <p>
+            Informacoes sincronizadas automaticamente com o release mais recente publicado no GitHub.
+          </p>
+        </div>
+        <div className="release-download-card">
+          <span>{release.version}</span>
+          <strong>{formatReleaseDate(release.publishedAt)}</strong>
+          <a className="primary-button" href={release.downloadUrl}>
+            Baixar instalador <Download size={18} />
+          </a>
+          <a className="github-release-link" href={release.htmlUrl} target="_blank" rel="noreferrer">
+            Ver no GitHub
+          </a>
+        </div>
+      </div>
+
+      {status && <p className="catalog-status">{status}</p>}
+
+      <div className="release-grid">
+        <article className="release-notes">
+          <h2>Notas da versão</h2>
+          <div className="release-note-list">
+            {releaseSections.map((section) => (
+              <section key={section.title}>
+                <h3>{section.title}</h3>
+                {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                {section.items.length > 0 && (
+                  <ul>
+                    {section.items.map((item) => <li key={item}>{item}</li>)}
+                  </ul>
+                )}
+              </section>
+            ))}
+          </div>
+        </article>
+
+        <aside className="release-assets">
+          <h2>Arquivos</h2>
+          {installer && <AssetCard asset={installer} primary />}
+          {extraAssets.map((asset) => <AssetCard asset={asset} key={asset.name} />)}
+        </aside>
+      </div>
+    </section>
+  );
+}
+
+function AssetCard({ asset, primary = false }) {
+  return (
+    <a className={primary ? 'asset-card primary-asset' : 'asset-card'} href={asset.browser_download_url}>
+      <div>
+        <strong>{asset.name}</strong>
+        <span>{formatBytes(asset.size)} - {asset.download_count ?? 0} downloads</span>
+      </div>
+      <Download size={18} />
+    </a>
+  );
+}
+
+async function downloadCatalogFile(item) {
+  const response = await fetch(item.arquivo, { cache: 'no-store' });
+  if (!response.ok) throw new Error('Arquivo indisponivel');
+
+  const blob = await response.blob();
+  const objectUrl = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = objectUrl;
+  link.download = item.arquivoNome || `${item.id || 'edital'}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(objectUrl);
+}
+
+function normalizeCatalogItem(item, baseUrl = catalogUrl, catalogVersion = '') {
+  const version = item.atualizadoEm || catalogVersion || Date.now();
+
+  return {
+    ...item,
+    imagem: normalizeCatalogUrl(item.imagem, baseUrl, version),
+    arquivo: normalizeCatalogUrl(item.arquivo, baseUrl, version),
+  };
+}
+
+function normalizeCatalogUrl(value, baseUrl = catalogUrl, version = '') {
+  if (!value || value.startsWith('http') || value.startsWith('/')) {
+    return version && value ? appendCacheBust(value, version) : value;
+  }
+
+  if (!baseUrl.startsWith('http')) return value;
+
+  try {
+    return appendCacheBust(new URL(value, baseUrl).href, version);
+  } catch {
+    return value;
+  }
+}
+
+function withCacheBust(url) {
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}v=${Date.now()}`;
+}
+
+function appendCacheBust(url, version) {
+  if (!version) return url;
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}v=${encodeURIComponent(version)}`;
+}
+
+function normalizeSearchText(value) {
+  return value
+    .trim()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+}
+
+function formatReleaseDate(value) {
+  if (!value) return 'Data indisponivel';
+  return new Intl.DateTimeFormat('pt-BR', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date(value));
+}
+
+function formatBytes(value = 0) {
+  if (!value) return 'Tamanho indisponivel';
+  const mb = value / 1024 / 1024;
+  return `${mb.toFixed(1)} MB`;
+}
+
+function parseReleaseNotes(markdown = '') {
+  const sections = [];
+  let current = { title: 'Resumo', paragraphs: [], items: [] };
+
+  for (const rawLine of markdown.split('\n')) {
+    const line = rawLine.trim();
+    if (!line) continue;
+
+    if (line.startsWith('#')) {
+      const title = line.replace(/^#+\s*/, '').trim();
+      if (title && !title.toLowerCase().startsWith('track concursos')) {
+        if (current.paragraphs.length || current.items.length || current.title !== 'Resumo') sections.push(current);
+        current = { title, paragraphs: [], items: [] };
+      }
+      continue;
+    }
+
+    if (line.startsWith('- ')) {
+      current.items.push(stripMarkdown(line.slice(2)));
+      continue;
+    }
+
+    if (/^\d+\.\s/.test(line)) {
+      current.items.push(stripMarkdown(line.replace(/^\d+\.\s/, '')));
+      continue;
+    }
+
+    current.paragraphs.push(stripMarkdown(line));
+  }
+
+  if (current.paragraphs.length || current.items.length || sections.length === 0) sections.push(current);
+  return sections.slice(0, 8);
+}
+
+function stripMarkdown(value) {
+  return value
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .trim();
+}
+
+function Metric({ value, label }) {
+  return (
+    <div>
+      <strong>{value}</strong>
+      <span>{label}</span>
+    </div>
+  );
+}
+
+function FeatureCard({ icon, title, text }) {
+  return (
+    <article className="feature-card">
+      <div className="feature-icon">{icon}</div>
+      <h3>{title}</h3>
+      <p>{text}</p>
+    </article>
+  );
+}
+
+function SectionHeading({ eyebrow, title, text }) {
+  return (
+    <div className="section-heading">
+      <p className="eyebrow">{eyebrow}</p>
+      <h2>{title}</h2>
+      <p>{text}</p>
+    </div>
+  );
+}
+
+function Step({ number, title, text }) {
+  return (
+    <article className="step-card">
+      <span>{number}</span>
+      <h3>{title}</h3>
+      <p>{text}</p>
+    </article>
+  );
+}
+
+function Footer({ goTo }) {
+  return (
+    <footer className="footer">
+      <div>
+        <strong>Track Concursos</strong>
+        <p>Projeto publico para concurseiros organizarem estudo, progresso e editais.</p>
+      </div>
+      <div className="footer-links">
+        {navItems.map((item) => (
+          <button key={item.id} onClick={() => goTo(item.id)}>{item.label}</button>
+        ))}
+      </div>
+    </footer>
+  );
+}
+
+createRoot(document.getElementById('root')).render(<App />);
