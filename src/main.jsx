@@ -207,6 +207,33 @@ function HomePage({ goTo }) {
         <ScreenshotCarousel screenshots={appScreenshots} />
       </section>
 
+      <section className="github-star-section">
+        <div className="github-star-copy">
+          <p className="eyebrow">Apoie o projeto</p>
+          <h2>Se o Track Concursos te ajuda, uma estrela no GitHub ajuda demais.</h2>
+          <p>
+            O projeto é gratuito e público. Dar uma estrela aumenta a visibilidade,
+            mostra que a ferramenta está sendo útil e incentiva novas melhorias.
+          </p>
+          <a
+            className="primary-button"
+            href="https://github.com/michel-softwares/track-concursos"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Dar estrela no GitHub <Github size={18} />
+          </a>
+        </div>
+        <a
+          className="github-star-preview"
+          href="https://github.com/michel-softwares/track-concursos"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Abrir repositório do Track Concursos no GitHub"
+        >
+          <img src="./assets/github-star.png" alt="Botão de estrela do Track Concursos no GitHub" />
+        </a>
+      </section>
 
     </>
   );
