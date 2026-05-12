@@ -353,6 +353,8 @@ function GuidesPage() {
 
 function GuideDetail({ guide }) {
   const [release, setRelease] = useState(fallbackRelease);
+  const [htmlContent, setHtmlContent] = useState(null);
+  const [htmlLoading, setHtmlLoading] = useState(false);
 
   useEffect(() => {
     fetch('https://api.github.com/repos/michel-softwares/track-concursos/releases/latest')
@@ -370,6 +372,20 @@ function GuideDetail({ guide }) {
       .catch(() => {});
   }, []);
 
+  useEffect(() => {
+    if (guide.htmlFile) {
+      setHtmlLoading(true);
+      fetch(guide.htmlFile)
+        .then((res) => res.text())
+        .then((html) => {
+          const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+          setHtmlContent(bodyMatch ? bodyMatch[1] : html);
+          setHtmlLoading(false);
+        })
+        .catch(() => setHtmlLoading(false));
+    }
+  }, [guide.htmlFile]);
+
   return (
     <section className="page-section guide-detail-page">
       <a className="back-link" href="#/guias">
@@ -381,25 +397,31 @@ function GuideDetail({ guide }) {
         <p className="guide-lead">{guide.description}</p>
 
         <div className="guide-article-body">
-          {guide.sections.map((section) => (
-            <section key={section.title}>
-              <h2>{section.title}</h2>
-              {section.paragraphs?.map((paragraph) => <p key={paragraph}>{renderContent(paragraph)}</p>)}
-              {section.items && (
-                <ul>
-                  {section.items.map((item) => <li key={item}>{renderContent(item)}</li>)}
-                </ul>
-              )}
-              {section.video && (() => {
-                const embedUrl = getYouTubeEmbedUrl(section.video);
-                return embedUrl ? (
-                  <div className="video-embed">
-                    <iframe src={embedUrl} title={section.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy" />
-                  </div>
-                ) : null;
-              })()}
-            </section>
-          ))}
+          {htmlLoading ? (
+            <p>Carregando guia...</p>
+          ) : htmlContent ? (
+            <div className="guide-html-content" dangerouslySetInnerHTML={{ __html: htmlContent }} />
+          ) : (
+            guide.sections?.map((section) => (
+              <section key={section.title}>
+                <h2>{section.title}</h2>
+                {section.paragraphs?.map((paragraph) => <p key={paragraph}>{renderContent(paragraph)}</p>)}
+                {section.items && (
+                  <ul>
+                    {section.items.map((item) => <li key={item}>{renderContent(item)}</li>)}
+                  </ul>
+                )}
+                {section.video && (() => {
+                  const embedUrl = getYouTubeEmbedUrl(section.video);
+                  return embedUrl ? (
+                    <div className="video-embed">
+                      <iframe src={embedUrl} title={section.title} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy" />
+                    </div>
+                  ) : null;
+                })()}
+              </section>
+            ))
+          )}
         </div>
 
         <div className="guide-download-cta">

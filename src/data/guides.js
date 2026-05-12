@@ -15,7 +15,7 @@ export const guideGroups = [
     icon: GraduationCap,
     guides: [
       { title: 'Cadastrando seu primeiro concurso', slug: 'instalacao', status: 'Em breve' },
-      { title: 'Importando um Edital Premium', slug: 'primeiro-concurso', status: 'Em breve' },
+      { title: 'Importando um Edital Premium', slug: 'primeiro-concurso', status: 'Pronto' },
     ],
   },
   {
@@ -52,10 +52,10 @@ export const guideGroups = [
 
 export const guideDetails = {
   'requisitos-instalacao': {
-    category: 'Instalação',
+    category: 'Instalacao',
     title: 'Requisitos e link para download',
     description:
-      'Veja o que você precisa para instalar o Track Concursos e onde baixar a versão mais recente do aplicativo.',
+      'Veja o que voce precisa para instalar o Track Concursos e onde baixar a versao mais recente do aplicativo.',
     sections: [
       {
         title: 'Requisitos recomendados',
@@ -70,9 +70,16 @@ export const guideDetails = {
       {
         title: 'Como baixar',
         paragraphs: [
-          'Acesse a página de lançamentos do Track Concursos no GitHub para baixar a versão mais recente do aplicativo. Link: https://github.com/michel-softwares/track-concursos/releases',
+          'Acesse a pagina de lançamentos do Track Concursos no GitHub para baixar a versão mais recente do aplicativo. Link: https://github.com/michel-softwares/track-concursos/releases',
         ],
       },
     ],
+  },
+  'primeiro-concurso': {
+    htmlFile: 'guides/primeiro-concurso.html',
+    category: 'Primeiros passos',
+    title: 'Importando um Edital Premium',
+    description:
+      'Saiba como baixar Editais Premium do site e importá-los no Track Concursos.',
   },
 };
