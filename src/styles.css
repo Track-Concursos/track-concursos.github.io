@@ -798,6 +798,47 @@ img {
   margin: 12px 0 0;
 }
 
+.guide-html-content h1,
+.guide-html-content h2,
+.guide-html-content h3 {
+  margin: 24px 0 12px;
+  color: #fff;
+  line-height: 1.25;
+}
+.guide-html-content h1 { font-size: 1.5rem; }
+.guide-html-content h2 { font-size: 1.25rem; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+.guide-html-content h3 { font-size: 1.1rem; }
+.guide-html-content p {
+  color: #c6d1e8;
+  line-height: 1.75;
+  margin: 0 0 16px;
+}
+.guide-html-content ul,
+.guide-html-content ol {
+  display: grid;
+  gap: 10px;
+  padding-left: 22px;
+  margin: 12px 0 16px;
+  color: #c6d1e8;
+  line-height: 1.75;
+}
+.guide-html-content img {
+  max-width: 100%;
+  border-radius: 12px;
+  margin: 16px 0;
+  border: 1px solid var(--line);
+}
+.guide-html-content a {
+  color: var(--cyan);
+  text-decoration: underline;
+}
+.guide-html-content a:hover {
+  color: #5eead4;
+}
+.guide-html-content ol li::marker {
+  font-weight: 700;
+}
+
 .content-link {
   color: var(--cyan);
   text-decoration: underline;
