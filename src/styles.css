@@ -366,6 +366,37 @@ img {
   font-size: 0.94rem;
 }
 
+.exam-notice {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 14px;
+  padding: 12px;
+  border: 1px solid rgba(248, 211, 74, 0.34);
+  border-radius: 14px;
+  background: rgba(248, 211, 74, 0.1);
+  color: #fff6cf;
+  font-size: 0.9rem;
+  font-weight: 750;
+  line-height: 1.45;
+}
+
+.exam-notice svg {
+  margin-top: 2px;
+  color: var(--yellow);
+}
+
+.exam-notice.past {
+  border-color: rgba(45, 212, 191, 0.34);
+  background: rgba(45, 212, 191, 0.1);
+  color: #d7fff8;
+}
+
+.exam-notice.past svg {
+  color: var(--cyan);
+}
+
 .showcase-section {
   display: grid;
   grid-template-columns: 0.85fr 1.15fr;
@@ -987,8 +1018,8 @@ img {
 
 .edital-card > img {
   width: 100%;
-  height: 240px;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   background: #080d18;
   display: block;
 }

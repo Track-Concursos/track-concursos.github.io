@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import {
   ArrowLeft,
   BookOpenCheck,
+  CalendarClock,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
@@ -541,6 +542,7 @@ function PremiumEditalsPage() {
     const [status, setStatus] = useState('Carregando catálogo...');
 
   useEffect(() => {
+    let cancelled = false;
     const freshCatalogUrl = withCacheBust(catalogUrl);
 
     fetch(freshCatalogUrl, { cache: 'no-store' })
@@ -549,8 +551,13 @@ function PremiumEditalsPage() {
         return response.json();
       })
       .then((data) => {
-        setCatalog((data.editais || []).map((item) => normalizeCatalogItem(item, freshCatalogUrl, data.atualizadoEm)));
+        const items = (data.editais || []).map((item) => normalizeCatalogItem(item, freshCatalogUrl, data.atualizadoEm));
+        if (cancelled) return;
+        setCatalog(items);
         setStatus('');
+        hydrateCatalogExamNotices(items).then((hydrated) => {
+          if (!cancelled) setCatalog(hydrated);
+        });
       })
       .catch(() => {
         fetch(withCacheBust(localCatalogUrl), { cache: 'no-store' })
@@ -559,11 +566,22 @@ function PremiumEditalsPage() {
             return response.json();
           })
           .then((data) => {
-            setCatalog((data.editais || []).map((item) => normalizeCatalogItem(item, catalogUrl, data.atualizadoEm)));
+            const items = (data.editais || []).map((item) => normalizeCatalogItem(item, catalogUrl, data.atualizadoEm));
+            if (cancelled) return;
+            setCatalog(items);
             setStatus('');
+            hydrateCatalogExamNotices(items).then((hydrated) => {
+              if (!cancelled) setCatalog(hydrated);
+            });
           })
-          .catch(() => setStatus('Não foi possível carregar o catálogo agora.'));
+          .catch(() => {
+            if (!cancelled) setStatus('Não foi possível carregar o catálogo agora.');
+          });
       });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const filtered = useMemo(() => {
@@ -623,6 +641,12 @@ function PremiumEditalsPage() {
               <h2>{item.titulo}</h2>
               <p>{item.cargo}</p>
               {item.descricao && <p className="edital-description">{item.descricao}</p>}
+              {item.examNotice && (
+                <div className={`exam-notice ${item.examNotice.type}`}>
+                  <CalendarClock size={17} />
+                  <span>{item.examNotice.text}</span>
+                </div>
+              )}
               <button className="download-button" onClick={() => downloadCatalogFile(item)}>
                 Baixar JSON <Download size={17} />
               </button>
@@ -774,6 +798,99 @@ function normalizeCatalogItem(item, baseUrl = catalogUrl, catalogVersion = '') {
     imagem: normalizeCatalogUrl(item.imagem, baseUrl, version),
     arquivo: normalizeCatalogUrl(item.arquivo, baseUrl, version),
   };
+}
+
+async function hydrateCatalogExamNotices(items) {
+  return Promise.all(
+    items.map(async (item) => {
+      try {
+        const response = await fetch(item.arquivo, { cache: 'no-store' });
+        if (!response.ok) throw new Error('Arquivo indisponível');
+        const data = await response.json();
+        const examNotice = getExamNotice(item, data);
+        return examNotice ? { ...item, examNotice } : item;
+      } catch {
+        return item;
+      }
+    }),
+  );
+}
+
+function getExamNotice(item, data) {
+  const concurso = data?.concurso || {};
+  if (!isPostEdital(item, concurso)) return null;
+
+  const examDate = parseExamDate(concurso.dataProva);
+  if (!examDate) return null;
+
+  const today = getLocalDateOnly();
+  const diffDays = Math.ceil((examDate.getTime() - today.getTime()) / 86400000);
+
+  if (diffDays < 0) {
+    return {
+      type: 'past',
+      text: 'A prova desse concurso já passou, mas você ainda pode utilizar a estrutura como pré-edital e estudar pro próximo concurso!',
+    };
+  }
+
+  const formattedDate = formatExamDate(examDate);
+  const daysText = diffDays === 1 ? '1 dia' : `${diffDays} dias`;
+  const scheduleWarning =
+    ' ⚠️ O cronograma e a data da prova podem ser modificados pela banca a qualquer momento. Fique sempre atento às retificações!';
+  const text =
+    diffDays === 0
+      ? `A prova desse concurso ocorrerá hoje, no dia ${formattedDate}.${scheduleWarning}`
+      : `A prova desse concurso ocorrerá em ${daysText} no dia ${formattedDate}.${scheduleWarning}`;
+
+  return {
+    type: 'upcoming',
+    text,
+  };
+}
+
+function isPostEdital(item, concurso) {
+  if (concurso.preEdital === false) return true;
+  if (concurso.preEdital === true) return false;
+
+  const source = [item.titulo, item.descricao, item.arquivoNome, item.arquivo, ...(item.tags || [])]
+    .filter(Boolean)
+    .join(' ');
+
+  return normalizeSearchText(source).includes('pos-edital');
+}
+
+function parseExamDate(value) {
+  if (!value) return null;
+  if (value instanceof Date && !Number.isNaN(value.getTime())) return getLocalDateOnly(value);
+
+  const raw = String(value).trim();
+  const isoMatch = raw.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (isoMatch) return buildValidDate(Number(isoMatch[1]), Number(isoMatch[2]), Number(isoMatch[3]));
+
+  const brMatch = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (brMatch) return buildValidDate(Number(brMatch[3]), Number(brMatch[2]), Number(brMatch[1]));
+
+  const parsed = new Date(raw);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return getLocalDateOnly(parsed);
+}
+
+function buildValidDate(year, month, day) {
+  const date = new Date(year, month - 1, day);
+  if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) return null;
+  return date;
+}
+
+function getLocalDateOnly(date = new Date()) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+function formatExamDate(date) {
+  return new Intl.DateTimeFormat('pt-BR', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  }).format(date);
 }
 
 function normalizeCatalogUrl(value, baseUrl = catalogUrl, version = '') {
