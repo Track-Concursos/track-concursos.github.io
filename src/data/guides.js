@@ -6,7 +6,7 @@ export const guideGroups = [
     description: 'Requisitos e instalação',
     icon: HardDriveDownload,
     guides: [
-      { title: 'Windows 11: Requisitos e link para download', slug: 'requisitos-instalacao', status: 'Pronto' },
+      { title: 'Windows 10 e 11: Requisitos e link para download', slug: 'requisitos-instalacao', status: 'Pronto' },
     ],
   },
   {
@@ -14,8 +14,8 @@ export const guideGroups = [
     description: 'Criando ou importando seu primeiro card de Concurso.',
     icon: GraduationCap,
     guides: [
-      { title: 'Cadastrando seu primeiro concurso', slug: 'instalacao', status: 'Em breve' },
-      { title: 'Importando um Edital Premium', slug: 'primeiro-concurso', status: 'Pronto' },
+      { title: 'Cadastrando seu pré ou pós-edital', slug: 'instalacao', status: 'Em breve' },
+      { title: 'Baixando e Importando um Edital Premium', slug: 'primeiro-concurso', status: 'Pronto' },
     ],
   },
   {
