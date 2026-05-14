@@ -1,4 +1,4 @@
-import { FileJson, GraduationCap, HardDriveDownload, Layers3, Sparkles } from 'lucide-react';
+import { GraduationCap, HardDriveDownload, Layers3, Sparkles } from 'lucide-react';
 
 export const guideGroups = [
      {
@@ -29,16 +29,6 @@ export const guideGroups = [
     ],
   },
   {
-    title: 'Editais Premium',
-    description: 'Importe estruturas prontas.',
-    icon: FileJson,
-    guides: [
-      { title: 'Baixando um edital premium', slug: 'baixar-edital-premium', status: 'Em breve' },
-      { title: 'Importando o arquivo JSON', slug: 'importar-json', status: 'Em breve' },
-      { title: 'Atualizando um edital já existente', slug: 'atualizar-edital', status: 'Em breve' },
-    ],
-  },
-   {
     title: 'Recursos avançados',
     description: 'Espaço para guias futuros sobre ferramentas, automações e prompts com IA.',
     icon: Sparkles,
