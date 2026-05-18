@@ -70,6 +70,7 @@ const catalogUrl =
   import.meta.env.VITE_EDITAIS_CATALOG_URL ||
   'https://raw.githubusercontent.com/michel-softwares/Editais-Premium/main/catalog.json';
 const localCatalogUrl = './data/catalog.sample.json';
+const googleAnalyticsMeasurementId = import.meta.env.VITE_GA_MEASUREMENT_ID || '';
 const fallbackRelease = {
   version: 'v1.0.2',
   name: 'Track Concursos v1.0.2',
@@ -119,6 +120,10 @@ function App() {
   const [route, setRoute] = useState(getRoute);
   const [menuOpen, setMenuOpen] = useState(false);
   const [latestVersion, setLatestVersion] = useState(fallbackRelease.version);
+
+  useEffect(() => {
+    initializeGoogleAnalytics();
+  }, []);
 
   useEffect(() => {
     const onHashChange = () => setRoute(getRoute());
@@ -788,6 +793,37 @@ async function downloadCatalogFile(item) {
   link.click();
   link.remove();
   URL.revokeObjectURL(objectUrl);
+  trackPremiumEditalDownload(item);
+}
+
+function initializeGoogleAnalytics() {
+  if (!googleAnalyticsMeasurementId || window.gtag) return;
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function gtag() {
+    window.dataLayer.push(arguments);
+  };
+
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(googleAnalyticsMeasurementId)}`;
+  document.head.appendChild(script);
+
+  window.gtag('js', new Date());
+  window.gtag('config', googleAnalyticsMeasurementId);
+}
+
+function trackPremiumEditalDownload(item) {
+  if (typeof window.gtag !== 'function') return;
+
+  window.gtag('event', 'download_edital_premium', {
+    edital_id: item.id || '',
+    edital_titulo: item.titulo || '',
+    arquivo_nome: item.arquivoNome || '',
+    orgao: item.orgao || '',
+    banca: item.banca || '',
+    cargo: item.cargo || '',
+  });
 }
 
 function normalizeCatalogItem(item, baseUrl = catalogUrl, catalogVersion = '') {

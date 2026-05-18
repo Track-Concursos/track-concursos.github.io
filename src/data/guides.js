@@ -36,6 +36,7 @@ export const guideGroups = [
       { title: 'Como verticalizar automaticamente um edital com auxílio de uma IA', slug: 'links-sugeridos', status: 'Em breve' },
       { title: 'Como exportar um Edital feito por você', slug: 'catalogos-drive', status: 'Em breve' },
       { title: 'Linkar automaticamente todos os seus livros PDFs nos tópicos', slug: 'revisao', status: 'Em breve' },
+      { title: 'Adicionar matérias extras com auxílio de IA', slug: 'materias-extras-ia', status: 'Em breve' },
     ],
   },
 ];
