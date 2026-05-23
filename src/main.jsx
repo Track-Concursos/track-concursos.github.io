@@ -602,9 +602,9 @@ function PremiumEditalsPage() {
       <div className="premium-hero">
         <div>
           <p className="eyebrow">Biblioteca pública</p>
-          <h1>Pesquise e baixe Editais Premium prontos para importar.</h1>
+          <h1>Pesquise e baixe estruturas de Pré ou Pós-edital prontas para importar e começar a estudar!</h1>
           <p>
-            Aqui você encontrará Editais Premium Gratuitos, é só baixar o .JSON e importar no seu Track Concursos!
+            Todos os Editais aqui são disponibilizados de graça, possuem conteúdo programático verticalizado, painel de prova com quantidade de questões + pesos já preenchido, Ciclo de Estudos sugeridos, edital oficial linkado e diversas outras informações essenciais. Baixe, importe e comece a estudar sem perder tempo se organizando!
           </p>
         </div>
         <div className="repo-card">
