@@ -541,21 +541,6 @@ function PremiumEditalsPage() {
   const [catalog, setCatalog] = useState([]);
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState('Carregando catálogo...');
-  const [githubStars, setGithubStars] = useState(null);
-
-  useEffect(() => {
-    fetch('https://api.github.com/repos/michel-softwares/track-concursos')
-      .then((response) => {
-        if (!response.ok) throw new Error();
-        return response.json();
-      })
-      .then((data) => {
-        if (data && typeof data.stargazers_count === 'number') {
-          setGithubStars(data.stargazers_count);
-        }
-      })
-      .catch(() => {});
-  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -628,18 +613,15 @@ function PremiumEditalsPage() {
           <strong>Editais Premium gratuitos</strong>
           <span>esses editais são organizados por mim e disponibilizados gratuitamente, se não encontrou um edital para o concurso que você quer estudar entre em contato comigo e solicite um Edital Premium GRÁTIS! Peço apenas que apoie o projeto dando uma Estrela no repositório Github</span>
           <a
-            href="https://github.com/michel-softwares/track-concursos"
+            href="https://github.com/michel-softwares/track-concursos/stargazers"
             target="_blank"
             rel="noreferrer"
-            className="github-star-badge-official"
+            className="github-star-shields-link"
           >
-            <span className="github-official-btn">
-              <Github size={14} className="github-official-icon" />
-              <span>Star</span>
-            </span>
-            <span className="github-official-count">
-              {githubStars !== null ? githubStars : '...'}
-            </span>
+            <img
+              src="https://img.shields.io/github/stars/michel-softwares/track-concursos?label=Star&style=social"
+              alt="GitHub Stars"
+            />
           </a>
         </div>
       </div>
