@@ -631,12 +631,13 @@ function PremiumEditalsPage() {
             href="https://github.com/michel-softwares/track-concursos"
             target="_blank"
             rel="noreferrer"
-            className="github-star-badge-btn"
+            className="github-star-badge-official"
           >
-            <span className="github-star-btn-left">
-              <Star size={14} className="star-icon-glow" /> Star
+            <span className="github-official-btn">
+              <Github size={14} className="github-official-icon" />
+              <span>Star</span>
             </span>
-            <span className="github-star-btn-right">
+            <span className="github-official-count">
               {githubStars !== null ? githubStars : '...'}
             </span>
           </a>
