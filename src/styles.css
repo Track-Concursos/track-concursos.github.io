@@ -956,6 +956,60 @@ img {
   overflow-wrap: anywhere;
 }
 
+.github-star-badge-btn {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #fff;
+  transition: all 160ms ease;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.github-star-badge-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(46, 140, 255, 0.45);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(46, 140, 255, 0.15);
+}
+
+.github-star-btn-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.github-star-btn-right {
+  padding: 6px 10px;
+  border-left: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--cyan);
+  font-weight: 800;
+}
+
+.star-icon-glow {
+  color: var(--yellow) !important;
+  animation: pulse-gold 2s infinite ease-in-out;
+}
+
+@keyframes pulse-gold {
+  0%, 100% {
+    filter: drop-shadow(0 0 1px rgba(248, 211, 74, 0.4));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 4px rgba(248, 211, 74, 0.9));
+    transform: scale(1.1);
+  }
+}
+
 .search-panel {
   display: flex;
   align-items: center;
