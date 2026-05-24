@@ -57,13 +57,26 @@ function parseInfo(text, folderName, jsonName) {
   const cargoLine = lines[1] || titleLine;
   const descriptionLine = lines[2] || cargoLine;
   const bancaYearLine = lines[3] || '';
-  const simpleBancaMatch = bancaYearLine.match(/\b([A-Z]{3,}(?:\s+[A-Z]{2,})*)\s+(20\d{2})\b/);
+  
   const yearMatch = bancaYearLine.match(/\b(20\d{2})\b/);
+  let banca = 'A definir';
+  
+  if (yearMatch) {
+    const cleanedBanca = bancaYearLine.replace(yearMatch[0], '').replace(/\s+/g, ' ').trim();
+    if (cleanedBanca) {
+      banca = cleanedBanca;
+    }
+  } else {
+    const trimmed = bancaYearLine.trim();
+    if (trimmed) {
+      banca = trimmed;
+    }
+  }
 
   return {
     titulo: stripDecorativePrefix(titleLine),
     orgao: inferAgency(folderName, titleLine),
-    banca: simpleBancaMatch?.[1]?.trim() || 'A definir',
+    banca: banca,
     cargo: stripDecorativePrefix(cargoLine),
     ano: yearMatch ? Number(yearMatch[1]) : new Date().getFullYear(),
     tags: buildTags(cleaned, folderName),
