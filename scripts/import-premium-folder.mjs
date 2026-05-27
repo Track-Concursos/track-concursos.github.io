@@ -53,24 +53,42 @@ function stripDecorativePrefix(value) {
 function parseInfo(text, folderName, jsonName) {
   const cleaned = cleanText(repairMojibake(text));
   const lines = cleaned.split('\n');
-  const titleLine = lines[0] || folderName;
-  const cargoLine = lines[1] || titleLine;
-  const descriptionLine = lines[2] || cargoLine;
-  const bancaYearLine = lines[3] || '';
+  
+  let titleLine = folderName;
+  let cargoLine = folderName;
+  let descriptionLine = "baixe o arquivo .JSON importe no seu Track Concursos e comece a estudar";
+  let bancaYearLine = "";
+  
+  const isPremiumFormat = text.includes("FICHA INFORMATIVA - EDITAL PREMIUM TRACK CONCURSOS");
+  
+  if (isPremiumFormat) {
+    for (const line of lines) {
+      if (line.includes("🏢 ÓRGÃO:")) {
+        titleLine = line.replace("🏢 ÓRGÃO:", "").trim();
+      } else if (line.includes("🪪 CARGO:")) {
+        cargoLine = line.replace("🪪 CARGO:", "").trim();
+      } else if (line.includes("🧾 BANCA:")) {
+        bancaYearLine = line;
+      }
+    }
+  } else {
+    titleLine = lines[0] || folderName;
+    cargoLine = lines[1] || titleLine;
+    descriptionLine = lines[2] || cargoLine;
+    bancaYearLine = lines[3] || '';
+  }
   
   const yearMatch = bancaYearLine.match(/\b(20\d{2})\b/);
   let banca = 'A definir';
   
-  if (yearMatch) {
-    const cleanedBanca = bancaYearLine.replace(yearMatch[0], '').replace(/\s+/g, ' ').trim();
-    if (cleanedBanca) {
-      banca = cleanedBanca;
-    }
-  } else {
-    const trimmed = bancaYearLine.trim();
-    if (trimmed) {
-      banca = trimmed;
-    }
+  let cleanBancaLine = bancaYearLine
+    .replace(/🧾\s*(?:BANCA:)?/i, '')
+    .replace(/\b(20\d{2})\b/, '')
+    .replace(/:/g, '')
+    .trim();
+    
+  if (cleanBancaLine) {
+    banca = cleanBancaLine;
   }
 
   return {
