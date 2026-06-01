@@ -14,7 +14,7 @@ export const guideGroups = [
     description: 'Criando ou importando seu primeiro card de Concurso.',
     icon: GraduationCap,
     guides: [
-      { title: 'Cadastrando seu pré ou pós-edital', slug: 'instalacao', status: 'Em breve' },
+      { title: 'Cadastrando seu pré ou pós-edital', slug: 'cadastrando-manual', status: 'Pronto' },
       { title: 'Baixando e Importando um Edital Premium', slug: 'primeiro-concurso', status: 'Pronto' },
     ],
   },
@@ -72,5 +72,12 @@ export const guideDetails = {
     title: 'Importando um Edital Premium',
     description:
       'Saiba como instalar Editais Premium facilmente no Track Concursos.',
+  },
+  'cadastrando-manual': {
+    htmlFile: 'guides/cadastrando-manual.html',
+    category: 'Primeiros passos',
+    title: 'Cadastrando seu pré ou pós-edital',
+    description:
+      'Veja o passo a passo de como cadastrar manualmente um pré ou pós-edital no Track Concursos.',
   },
 };
