@@ -1,7 +1,7 @@
 import { GraduationCap, HardDriveDownload, Layers3, Sparkles } from 'lucide-react';
 
 export const guideGroups = [
-     {
+  {
     title: 'Instalação',
     description: 'Requisitos e instalação',
     icon: HardDriveDownload,
@@ -80,5 +80,12 @@ export const guideDetails = {
     title: 'Cadastrando seu pré ou pós-edital',
     description:
       'Veja o passo a passo de como cadastrar manualmente um pré ou pós-edital no Track Concursos.',
+  },
+  'mural-concurso': {
+    htmlFile: 'guides/mural-concurso.html',
+    category: 'Primeiros passos',
+    title: 'Mural de Concursos Realizados',
+    description:
+      'Entenda como funciona o Mural de Concursos Realizados.',
   },
 };
