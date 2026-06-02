@@ -81,8 +81,8 @@ export const guideDetails = {
     description:
       'Veja o passo a passo de como cadastrar manualmente um pré ou pós-edital no Track Concursos.',
   },
-  'mural-concurso': {
-    htmlFile: 'guides/mural-concurso.html',
+  'mural-concursos': {
+    htmlFile: 'guides/mural-concursos.html',
     category: 'Primeiros passos',
     title: 'Mural de Concursos Realizados',
     description:
