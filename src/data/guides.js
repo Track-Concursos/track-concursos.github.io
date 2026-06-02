@@ -16,6 +16,7 @@ export const guideGroups = [
     guides: [
       { title: 'Cadastrando seu pré ou pós-edital', slug: 'cadastrando-manual', status: 'Pronto' },
       { title: 'Baixando e Importando um Edital Premium', slug: 'primeiro-concurso', status: 'Pronto' },
+      { title: 'Mural de Concursos Realizados', slug: 'mural-concursos', status: 'Pronto' },
     ],
   },
   {
