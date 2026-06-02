@@ -72,7 +72,7 @@ export const guideDetails = {
     category: 'Primeiros passos',
     title: 'Importando um Edital Premium',
     description:
-      'Saiba como instalar Editais Premium facilmente no Track Concursos.',
+      'Saiba como instalar Editais Premium facilmente no Track Concursos e comece a estudar agora!',
   },
   'cadastrando-manual': {
     htmlFile: 'guides/cadastrando-manual.html',
