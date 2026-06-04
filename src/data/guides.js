@@ -25,7 +25,7 @@ export const guideGroups = [
     icon: Layers3,
     guides: [
       { title: 'Como registrar horas e questões manualmente', slug: 'questoes', status: 'Pronto' },
-      { title: 'Como preencher o Painel da Prova', slug: 'taxa-acertos', status: 'Em breve' },
+      { title: 'Como preencher o Painel da Prova', slug: 'taxa-acertos', status: 'Pronto' },
       { title: 'Como configurar um Ciclo de Estudos', slug: 'simulados', status: 'Em breve' },
     ],
   },
@@ -94,5 +94,12 @@ export const guideDetails = {
     title: 'Como registrar horas e questões manualmente',
     description:
       'Veja o passo a passo de como registrar suas horas de estudo e o lançamento de questões de forma manual.',
+  },
+  'taxa-acertos': {
+    htmlFile: 'guides/taxa-acertos.html',
+    category: 'Organização de estudos',
+    title: 'Como preencher o Painel da Prova',
+    description:
+      'Aprenda como preencher o Painel da Prova no Track Concursos para acompanhar seu desempenho.',
   },
 };
