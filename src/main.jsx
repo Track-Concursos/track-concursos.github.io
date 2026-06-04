@@ -654,50 +654,79 @@ function PremiumEditalsPage() {
         <small>Origem: <code>{catalogUrl}</code></small>
       </div>
       <div className="editals-grid">
-        {filtered.map((item) => (
-          <article className={`edital-card ${item.destaque ? 'destaque' : ''}`} key={item.id}>
-            {item.destaque && (
-              <span className="destaque-badge">
-                <Star size={12} fill="currentColor" /> Premium
-              </span>
-            )}
-            {item.materiais && item.materiais.length > 0 && (
-              <div className="edital-materials-badges">
-                {item.materiais.map((mat) => (
-                  <img
-                    key={mat}
-                    src={`./logos/${mat}.png`}
-                    alt={mat}
-                    className="material-logo-badge"
-                    title={`Material linkado: ${mat}`}
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                    }}
-                  />
-                ))}
-              </div>
-            )}
-            <img src={item.imagem} alt={`Capa do edital ${item.titulo}`} />
-            <div className="edital-content">
-              <div className="edital-topline">
-                <span>{item.banca}</span>
-                <span>{item.ano}</span>
-              </div>
-              <h2>{item.titulo}</h2>
-              <p>{item.cargo}</p>
-              {item.descricao && <p className="edital-description">{item.descricao}</p>}
-              {item.examNotice && (
-                <div className={`exam-notice ${item.examNotice.type}`}>
-                  <CalendarClock size={17} />
-                  <span>{item.examNotice.text}</span>
+        {filtered.map((item) => {
+          const hasVideos = item.materiais?.includes('youtube') || item.materiais?.includes('estrategia');
+          const hasQuestions = item.materiais?.includes('qconcursos') || item.materiais?.includes('tecconcursos');
+          
+          let badgeText = 'PREMIUM LINKADO';
+          let highlightText = 'materiais de estudo';
+          
+          if (hasVideos && hasQuestions) {
+            badgeText = 'AULAS + QUESTÕES';
+            highlightText = 'videoaulas e cadernos de questões';
+          } else if (hasQuestions) {
+            badgeText = 'CADERNOS DE QUESTÕES';
+            highlightText = 'cadernos de questões';
+          } else if (hasVideos) {
+            badgeText = 'VIDEOAULAS INCLUSAS';
+            highlightText = 'videoaulas';
+          }
+
+          return (
+            <article className={`edital-card ${item.destaque ? 'destaque' : ''}`} key={item.id}>
+              {item.destaque && (
+                <span className="destaque-badge">
+                  <Star size={12} fill="currentColor" /> Premium
+                </span>
+              )}
+              {item.materiais && item.materiais.length > 0 && (
+                <div className="edital-materials-badges premium-badge-box">
+                  <span className="premium-badge-text">{badgeText}</span>
+                  <div className="premium-badge-logos">
+                    {item.materiais.map((mat) => (
+                      <img
+                        key={mat}
+                        src={`./logos/${mat}.png`}
+                        alt={mat}
+                        className="material-logo-badge"
+                        title={`Material: ${mat}`}
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
+                    ))}
+                  </div>
                 </div>
               )}
-              <button className="download-button" onClick={() => downloadCatalogFile(item)}>
-                Baixar JSON <Download size={17} />
-              </button>
-            </div>
-          </article>
-        ))}
+              <img src={item.imagem} alt={`Capa do edital ${item.titulo}`} />
+              <div className="edital-content">
+                <div className="edital-topline">
+                  <span>{item.banca}</span>
+                  <span>{item.ano}</span>
+                </div>
+                <h2>{item.titulo}</h2>
+                <p>{item.cargo}</p>
+                {item.materiais && item.materiais.length > 0 ? (
+                  <div className="premium-highlight-info">
+                    <CheckCircle2 size={16} className="highlight-icon" />
+                    <span>Possui <strong>{highlightText}</strong> linkados tópico por tópico!</span>
+                  </div>
+                ) : (
+                  item.descricao && <p className="edital-description">{item.descricao}</p>
+                )}
+                {item.examNotice && (
+                  <div className={`exam-notice ${item.examNotice.type}`}>
+                    <CalendarClock size={17} />
+                    <span>{item.examNotice.text}</span>
+                  </div>
+                )}
+                <button className={`download-button ${item.destaque ? 'button-destaque' : ''}`} onClick={() => downloadCatalogFile(item)}>
+                  Baixar JSON <Download size={17} />
+                </button>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </section>
   );

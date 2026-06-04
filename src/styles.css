@@ -1420,19 +1420,28 @@ img {
 
 /* Premium Editals Styles */
 .edital-card.destaque {
-  border: 1.5px solid rgba(248, 211, 74, 0.65);
-  box-shadow: 0 0 25px rgba(248, 211, 74, 0.15), 0 20px 55px rgba(0, 0, 0, 0.35);
-  background: linear-gradient(180deg, rgba(248, 211, 74, 0.05) 0%, rgba(18, 23, 38, 0.8) 100%);
+  border: 2.5px solid #f8d34a; /* thick shining gold border */
+  box-shadow: 0 0 30px rgba(248, 211, 74, 0.35), 0 20px 55px rgba(0, 0, 0, 0.5); /* glowing gold shadow */
+  background: linear-gradient(180deg, rgba(248, 211, 74, 0.08) 0%, rgba(18, 23, 38, 0.86) 100%);
+  transform: translateY(-2px); /* sutil elevation */
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+  position: relative;
+}
+
+.edital-card.destaque:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 35px rgba(248, 211, 74, 0.5), 0 25px 65px rgba(0, 0, 0, 0.6);
+  border-color: #ffd700;
 }
 
 .edital-card.destaque > img {
-  border-bottom: 2px solid rgba(248, 211, 74, 0.4);
+  border-bottom: 2.5px solid #f8d34a;
 }
 
 .destaque-badge {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 14px;
+  left: 14px;
   z-index: 5;
   display: inline-flex;
   align-items: center;
@@ -1452,31 +1461,104 @@ img {
   flex-shrink: 0;
 }
 
-.edital-materials-badges {
+/* Premium Badge Box (Top-Right overlay) */
+.edital-materials-badges.premium-badge-box {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 14px;
+  right: 14px;
   z-index: 5;
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(7, 10, 18, 0.7);
-  padding: 4px 8px;
-  border-radius: 20px;
+  gap: 10px;
+  background: linear-gradient(135deg, #f8d34a, #d4af37);
+  color: #070a12;
+  padding: 6px 14px;
+  border-radius: 30px;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 15px rgba(248, 211, 74, 0.6), 0 6px 20px rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.edital-materials-badges.premium-badge-box:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 25px rgba(248, 211, 74, 0.8), 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.premium-badge-text {
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.premium-badge-logos {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .material-logo-badge {
   height: 20px;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
   transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .material-logo-badge:hover {
-  transform: scale(1.18);
+  transform: scale(1.22);
+}
+
+/* Premium Highlight Box (Replacing standard description) */
+.premium-highlight-info {
+  margin-top: 12px;
+  min-height: 3.3em;
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(248, 211, 74, 0.4);
+  background: rgba(248, 211, 74, 0.08);
+  color: #fff6cf;
+  line-height: 1.45;
+  box-shadow: inset 0 0 10px rgba(248, 211, 74, 0.03);
+}
+
+.premium-highlight-info strong {
+  color: #f8d34a;
+  font-weight: 800;
+}
+
+.highlight-icon {
+  color: #f8d34a;
+  flex-shrink: 0;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.95; }
+  50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 4px rgba(248, 211, 74, 0.6)); }
+  100% { transform: scale(1); opacity: 0.95; }
+}
+
+/* Golden Download Button */
+.download-button.button-destaque {
+  background: linear-gradient(135deg, #f8d34a, #d4af37);
+  color: #070a12;
+  box-shadow: 0 8px 24px rgba(248, 211, 74, 0.35);
+  font-weight: 900;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.download-button.button-destaque:hover {
+  background: linear-gradient(135deg, #ffd700, #b8860b);
+  box-shadow: 0 12px 30px rgba(248, 211, 74, 0.55);
+  transform: translateY(-2px);
 }
