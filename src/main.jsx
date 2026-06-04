@@ -24,6 +24,7 @@ import {
   X,
 } from 'lucide-react';
 import './styles.css';
+import localCatalog from '../public/data/catalog.sample.json';
 import { guideDetails, guideGroups } from './data/guides.js';
 
 function getYouTubeEmbedUrl(url) {
@@ -544,47 +545,46 @@ function PremiumEditalsPage() {
 
   useEffect(() => {
     let cancelled = false;
-    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const isLocal = window.location.hostname === 'localhost' || 
+                    window.location.hostname === '127.0.0.1' || 
+                    window.location.protocol === 'file:';
     
-    const primaryUrl = isLocal ? localCatalogUrl : catalogUrl;
-    const secondaryUrl = isLocal ? catalogUrl : localCatalogUrl;
-    
-    const freshPrimaryUrl = withCacheBust(primaryUrl);
-    const freshSecondaryUrl = withCacheBust(secondaryUrl);
-
-    fetch(freshPrimaryUrl, { cache: 'no-store' })
-      .then((response) => {
-        if (!response.ok) throw new Error('Catálogo primário indisponível');
-        return response.json();
-      })
-      .then((data) => {
-        const items = (data.editais || []).map((item) => normalizeCatalogItem(item, freshPrimaryUrl, data.atualizadoEm));
-        if (cancelled) return;
-        setCatalog(items);
-        setStatus('');
-        hydrateCatalogExamNotices(items).then((hydrated) => {
-          if (!cancelled) setCatalog(hydrated);
-        });
-      })
-      .catch(() => {
-        fetch(freshSecondaryUrl, { cache: 'no-store' })
-          .then((response) => {
-            if (!response.ok) throw new Error('Catálogo secundário indisponível');
-            return response.json();
-          })
-          .then((data) => {
-            const items = (data.editais || []).map((item) => normalizeCatalogItem(item, freshSecondaryUrl, data.atualizadoEm));
-            if (cancelled) return;
-            setCatalog(items);
-            setStatus('');
-            hydrateCatalogExamNotices(items).then((hydrated) => {
-              if (!cancelled) setCatalog(hydrated);
-            });
-          })
-          .catch(() => {
-            if (!cancelled) setStatus('Não foi possível carregar o catálogo.');
-          });
+    if (isLocal) {
+      // Prioritize bundled local catalog directly to bypass browser security/CORS on file://
+      const items = (localCatalog.editais || []).map((item) => normalizeCatalogItem(item, './data/catalog.sample.json', localCatalog.atualizadoEm));
+      setCatalog(items);
+      setStatus('');
+      hydrateCatalogExamNotices(items).then((hydrated) => {
+        if (!cancelled) setCatalog(hydrated);
       });
+    } else {
+      // Online mode: fetch from remote URL
+      const freshCatalogUrl = withCacheBust(catalogUrl);
+      fetch(freshCatalogUrl, { cache: 'no-store' })
+        .then((response) => {
+          if (!response.ok) throw new Error('Catálogo indisponível');
+          return response.json();
+        })
+        .then((data) => {
+          const items = (data.editais || []).map((item) => normalizeCatalogItem(item, freshCatalogUrl, data.atualizadoEm));
+          if (cancelled) return;
+          setCatalog(items);
+          setStatus('');
+          hydrateCatalogExamNotices(items).then((hydrated) => {
+            if (!cancelled) setCatalog(hydrated);
+          });
+        })
+        .catch(() => {
+          // Fallback to bundled local catalog
+          if (cancelled) return;
+          const items = (localCatalog.editais || []).map((item) => normalizeCatalogItem(item, './data/catalog.sample.json', localCatalog.atualizadoEm));
+          setCatalog(items);
+          setStatus('');
+          hydrateCatalogExamNotices(items).then((hydrated) => {
+            if (!cancelled) setCatalog(hydrated);
+          });
+        });
+    }
 
     return () => {
       cancelled = true;
