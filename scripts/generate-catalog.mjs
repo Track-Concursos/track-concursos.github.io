@@ -1,4 +1,4 @@
-import { readdir, readFile, writeFile } from 'node:fs/promises';
+import { readdir, readFile, writeFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = process.argv[2] || 'editais';
@@ -72,6 +72,25 @@ async function main() {
       }
     } catch (e) {}
 
+    // Detect maximum modification time of files in this directory to serve as update date
+    let maxMtime = 0;
+    try {
+      const folderStat = await stat(folder);
+      maxMtime = folderStat.mtimeMs;
+      const files = await readdir(folder, { withFileTypes: true });
+      for (const file of files) {
+        if (file.isFile()) {
+          const fileStat = await stat(path.join(folder, file.name));
+          if (fileStat.mtimeMs > maxMtime) {
+            maxMtime = fileStat.mtimeMs;
+          }
+        }
+      }
+    } catch (e) {
+      maxMtime = Date.now();
+    }
+    const atualizadoEm = new Date(maxMtime).toISOString();
+
     const isDestaque = manifest.destaque || 
                        manifest.tags?.includes('destaque') || 
                        manifest.tags?.includes('premium') || 
@@ -90,10 +109,24 @@ async function main() {
       arquivo: `${publicFolder}/${manifest.arquivo || 'edital.json'}`,
       destaque: !!isDestaque,
       materiais: manifest.materiais || autoMaterials,
+      atualizadoEm,
     });
   }
 
-  editais.sort((a, b) => a.titulo.localeCompare(b.titulo, 'pt-BR'));
+  // Sort: destaque (premium) first, then by update date descending
+  editais.sort((a, b) => {
+    const aDestaque = a.destaque ? 1 : 0;
+    const bDestaque = b.destaque ? 1 : 0;
+    if (aDestaque !== bDestaque) {
+      return bDestaque - aDestaque;
+    }
+    const dateA = new Date(a.atualizadoEm || 0).getTime();
+    const dateB = new Date(b.atualizadoEm || 0).getTime();
+    if (dateA !== dateB) {
+      return dateB - dateA;
+    }
+    return a.titulo.localeCompare(b.titulo, 'pt-BR');
+  });
 
   await writeFile(
     output,

@@ -605,12 +605,17 @@ function PremiumEditalsPage() {
       });
     }
 
-    // Sort: destaque (premium) first, then alphabetical by title
+    // Sort: destaque (premium) first, then by update date descending
     return [...list].sort((a, b) => {
       const aDestaque = a.destaque ? 1 : 0;
       const bDestaque = b.destaque ? 1 : 0;
       if (aDestaque !== bDestaque) {
         return bDestaque - aDestaque;
+      }
+      const timeA = a.atualizadoEm ? new Date(a.atualizadoEm).getTime() : 0;
+      const timeB = b.atualizadoEm ? new Date(b.atualizadoEm).getTime() : 0;
+      if (timeA !== timeB) {
+        return timeB - timeA;
       }
       return a.titulo.localeCompare(b.titulo, 'pt-BR');
     });

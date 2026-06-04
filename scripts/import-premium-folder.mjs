@@ -1,4 +1,4 @@
-import { cp, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readdir, readFile, writeFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 const sourceRoot = process.argv[2];
@@ -197,6 +197,24 @@ async function main() {
 
     if (!jsonFile || !imageFile) continue;
 
+    // Detect maximum modification time of files in this directory to serve as update date
+    let maxMtime = 0;
+    try {
+      const folderStat = await stat(folderPath);
+      maxMtime = folderStat.mtimeMs;
+      for (const file of files) {
+        if (file.isFile()) {
+          const fileStat = await stat(path.join(folderPath, file.name));
+          if (fileStat.mtimeMs > maxMtime) {
+            maxMtime = fileStat.mtimeMs;
+          }
+        }
+      }
+    } catch (e) {
+      maxMtime = Date.now();
+    }
+    const atualizadoEm = new Date(maxMtime).toISOString();
+
     const id = slugify(folder.name);
     const targetFolder = path.join(publicRoot, id);
     const imageTarget = `capa${path.extname(imageFile.name).toLowerCase()}`;
@@ -246,10 +264,24 @@ async function main() {
       arquivoNome: info.arquivoNome,
       destaque: !!isDestaque,
       materiais: combinedMaterials,
+      atualizadoEm,
     });
   }
 
-  editais.sort((a, b) => a.titulo.localeCompare(b.titulo, 'pt-BR'));
+  // Sort: destaque (premium) first, then by update date descending
+  editais.sort((a, b) => {
+    const aDestaque = a.destaque ? 1 : 0;
+    const bDestaque = b.destaque ? 1 : 0;
+    if (aDestaque !== bDestaque) {
+      return bDestaque - aDestaque;
+    }
+    const dateA = new Date(a.atualizadoEm || 0).getTime();
+    const dateB = new Date(b.atualizadoEm || 0).getTime();
+    if (dateA !== dateB) {
+      return dateB - dateA;
+    }
+    return a.titulo.localeCompare(b.titulo, 'pt-BR');
+  });
 
   await writeFile(
     catalogOutput,
