@@ -25,7 +25,7 @@ export const guideGroups = [
     icon: Layers3,
     guides: [
       { title: 'Como registrar horas e questões manualmente', slug: 'questoes', status: 'Pronto' },
-      { title: 'Como preencher o Painel da Prova', slug: 'taxa-acertos', status: 'Pronto' },
+      { title: 'Como preencher o Painel da Prova', slug: 'painel-prova', status: 'Pronto' },
       { title: 'Como configurar um Ciclo de Estudos', slug: 'simulados', status: 'Em breve' },
     ],
   },
@@ -95,8 +95,8 @@ export const guideDetails = {
     description:
       'Veja o passo a passo de como registrar suas horas de estudo e o lançamento de questões de forma manual.',
   },
-  'taxa-acertos': {
-    htmlFile: 'guides/taxa-acertos.html',
+  'painel-prova': {
+    htmlFile: 'guides/painel-prova.html',
     category: 'Organização de estudos',
     title: 'Como preencher o Painel da Prova',
     description:
