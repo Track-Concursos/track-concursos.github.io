@@ -24,7 +24,7 @@ export const guideGroups = [
     description: 'Use progresso, questões e simulados para tomar decisões melhores.',
     icon: Layers3,
     guides: [
-      { title: 'Como registrar horas e questões manualmente', slug: 'questoes', status: 'Em breve' },
+      { title: 'Como registrar horas e questões manualmente', slug: 'questoes', status: 'Pronto' },
       { title: 'Como preencher o Painel da Prova', slug: 'taxa-acertos', status: 'Em breve' },
       { title: 'Como configurar um Ciclo de Estudos', slug: 'simulados', status: 'Em breve' },
     ],
@@ -87,5 +87,12 @@ export const guideDetails = {
     title: 'Mural de Concursos Realizados',
     description:
       'Entenda como funciona o Mural de Concursos Realizados.',
+  },
+  'questoes': {
+    htmlFile: 'guides/questoes.html',
+    category: 'Organização de estudos',
+    title: 'Como registrar horas e questões manualmente',
+    description:
+      'Veja o passo a passo de como registrar suas horas de estudo e o lançamento de questões de forma manual.',
   },
 };
