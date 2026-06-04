@@ -1464,18 +1464,18 @@ img {
 /* Premium Badge Box (Top-Right overlay) */
 .edital-materials-badges.premium-badge-box {
   position: absolute;
-  top: 14px;
-  right: 14px;
+  top: 10px;
+  right: 10px;
   z-index: 5;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   background: linear-gradient(135deg, #f8d34a, #d4af37);
   color: #070a12;
-  padding: 6px 14px;
-  border-radius: 30px;
-  border: 1.5px solid rgba(255, 255, 255, 0.45);
-  box-shadow: 0 0 15px rgba(248, 211, 74, 0.6), 0 6px 20px rgba(0, 0, 0, 0.4);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 10px rgba(248, 211, 74, 0.5), 0 4px 12px rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   transition: transform 180ms ease, box-shadow 180ms ease;
@@ -1483,28 +1483,28 @@ img {
 
 .edital-materials-badges.premium-badge-box:hover {
   transform: scale(1.04);
-  box-shadow: 0 0 25px rgba(248, 211, 74, 0.8), 0 8px 24px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 18px rgba(248, 211, 74, 0.7), 0 6px 18px rgba(0, 0, 0, 0.5);
 }
 
 .premium-badge-text {
-  font-size: 0.72rem;
+  font-size: 0.56rem;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   white-space: nowrap;
 }
 
 .premium-badge-logos {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .material-logo-badge {
-  height: 20px;
+  height: 12px;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
   transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 

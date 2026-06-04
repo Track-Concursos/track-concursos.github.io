@@ -544,15 +544,21 @@ function PremiumEditalsPage() {
 
   useEffect(() => {
     let cancelled = false;
-    const freshCatalogUrl = withCacheBust(catalogUrl);
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    
+    const primaryUrl = isLocal ? localCatalogUrl : catalogUrl;
+    const secondaryUrl = isLocal ? catalogUrl : localCatalogUrl;
+    
+    const freshPrimaryUrl = withCacheBust(primaryUrl);
+    const freshSecondaryUrl = withCacheBust(secondaryUrl);
 
-    fetch(freshCatalogUrl, { cache: 'no-store' })
+    fetch(freshPrimaryUrl, { cache: 'no-store' })
       .then((response) => {
-        if (!response.ok) throw new Error('Catálogo indisponível');
+        if (!response.ok) throw new Error('Catálogo primário indisponível');
         return response.json();
       })
       .then((data) => {
-        const items = (data.editais || []).map((item) => normalizeCatalogItem(item, freshCatalogUrl, data.atualizadoEm));
+        const items = (data.editais || []).map((item) => normalizeCatalogItem(item, freshPrimaryUrl, data.atualizadoEm));
         if (cancelled) return;
         setCatalog(items);
         setStatus('');
@@ -561,13 +567,13 @@ function PremiumEditalsPage() {
         });
       })
       .catch(() => {
-        fetch(withCacheBust(localCatalogUrl), { cache: 'no-store' })
+        fetch(freshSecondaryUrl, { cache: 'no-store' })
           .then((response) => {
-            if (!response.ok) throw new Error('Catálogo local indisponível');
+            if (!response.ok) throw new Error('Catálogo secundário indisponível');
             return response.json();
           })
           .then((data) => {
-            const items = (data.editais || []).map((item) => normalizeCatalogItem(item, catalogUrl, data.atualizadoEm));
+            const items = (data.editais || []).map((item) => normalizeCatalogItem(item, freshSecondaryUrl, data.atualizadoEm));
             if (cancelled) return;
             setCatalog(items);
             setStatus('');
@@ -576,7 +582,7 @@ function PremiumEditalsPage() {
             });
           })
           .catch(() => {
-            if (!cancelled) setStatus('Não foi possível carregar o catálogo agora.');
+            if (!cancelled) setStatus('Não foi possível carregar o catálogo.');
           });
       });
 
@@ -928,10 +934,16 @@ async function hydrateCatalogExamNotices(items) {
           ...autoMaterials
         ]));
 
+        const hasDestaqueInJson = data.destaque === true || 
+                                  data.concurso?.destaque === true || 
+                                  data.premium === true ||
+                                  data.concurso?.premium === true;
+
         return { 
           ...item, 
           examNotice,
-          materiais: combinedMaterials
+          materiais: combinedMaterials,
+          destaque: item.destaque || hasDestaqueInJson,
         };
       } catch {
         return item;
