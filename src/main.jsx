@@ -586,15 +586,27 @@ function PremiumEditalsPage() {
   }, []);
 
   const filtered = useMemo(() => {
+    let list = catalog;
     const normalized = normalizeSearchText(query);
-    if (!normalized) return catalog;
-    return catalog.filter((item) => {
-      const haystack = [item.titulo, item.orgao, item.banca, item.cargo, item.descricao, item.arquivoNome, ...(item.tags || [])]
-        .join(' ')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase();
-      return haystack.includes(normalized);
+    if (normalized) {
+      list = catalog.filter((item) => {
+        const haystack = [item.titulo, item.orgao, item.banca, item.cargo, item.descricao, item.arquivoNome, ...(item.tags || [])]
+          .join(' ')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase();
+        return haystack.includes(normalized);
+      });
+    }
+
+    // Sort: destaque (premium) first, then alphabetical by title
+    return [...list].sort((a, b) => {
+      const aDestaque = a.destaque ? 1 : 0;
+      const bDestaque = b.destaque ? 1 : 0;
+      if (aDestaque !== bDestaque) {
+        return bDestaque - aDestaque;
+      }
+      return a.titulo.localeCompare(b.titulo, 'pt-BR');
     });
   }, [catalog, query]);
 
@@ -643,7 +655,28 @@ function PremiumEditalsPage() {
       </div>
       <div className="editals-grid">
         {filtered.map((item) => (
-          <article className="edital-card" key={item.id}>
+          <article className={`edital-card ${item.destaque ? 'destaque' : ''}`} key={item.id}>
+            {item.destaque && (
+              <span className="destaque-badge">
+                <Star size={12} fill="currentColor" /> Premium
+              </span>
+            )}
+            {item.materiais && item.materiais.length > 0 && (
+              <div className="edital-materials-badges">
+                {item.materiais.map((mat) => (
+                  <img
+                    key={mat}
+                    src={`./logos/${mat}.png`}
+                    alt={mat}
+                    className="material-logo-badge"
+                    title={`Material linkado: ${mat}`}
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                    }}
+                  />
+                ))}
+              </div>
+            )}
             <img src={item.imagem} alt={`Capa do edital ${item.titulo}`} />
             <div className="edital-content">
               <div className="edital-topline">
@@ -802,6 +835,42 @@ async function downloadCatalogFile(item) {
   URL.revokeObjectURL(objectUrl);
 }
 
+function detectMaterials(data) {
+  const materials = new Set();
+  
+  function scan(obj) {
+    if (!obj) return;
+    if (typeof obj === 'string') {
+      const lower = obj.toLowerCase();
+      if (lower.includes('youtube.com') || lower.includes('youtu.be')) {
+        materials.add('youtube');
+      }
+      if (lower.includes('estrategiaconcursos.com.br') || lower.includes('estrategia.com.br')) {
+        materials.add('estrategia');
+      }
+      if (lower.includes('qconcursos.com')) {
+        materials.add('qconcursos');
+      }
+      if (lower.includes('tecconcursos.com.br')) {
+        materials.add('tecconcursos');
+      }
+    } else if (Array.isArray(obj)) {
+      for (const item of obj) {
+        scan(item);
+      }
+    } else if (typeof obj === 'object') {
+      for (const key in obj) {
+        scan(obj[key]);
+      }
+    }
+  }
+  
+  if (data && data.materias) {
+    scan(data.materias);
+  }
+  return Array.from(materials);
+}
+
 function normalizeCatalogItem(item, baseUrl = catalogUrl, catalogVersion = '') {
   const version = item.atualizadoEm || catalogVersion || Date.now();
 
@@ -809,6 +878,8 @@ function normalizeCatalogItem(item, baseUrl = catalogUrl, catalogVersion = '') {
     ...item,
     imagem: normalizeCatalogUrl(item.imagem, baseUrl, version),
     arquivo: normalizeCatalogUrl(item.arquivo, baseUrl, version),
+    destaque: item.destaque || item.tags?.includes('destaque') || item.tags?.includes('premium') || false,
+    materiais: item.materiais || [],
   };
 }
 
@@ -820,7 +891,19 @@ async function hydrateCatalogExamNotices(items) {
         if (!response.ok) throw new Error('Arquivo indisponível');
         const data = await response.json();
         const examNotice = getExamNotice(item, data);
-        return examNotice ? { ...item, examNotice } : item;
+        
+        // Auto-detect materials from JSON file
+        const autoMaterials = detectMaterials(data);
+        const combinedMaterials = Array.from(new Set([
+          ...(item.materiais || []),
+          ...autoMaterials
+        ]));
+
+        return { 
+          ...item, 
+          examNotice,
+          materiais: combinedMaterials
+        };
       } catch {
         return item;
       }

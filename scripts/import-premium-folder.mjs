@@ -63,12 +63,18 @@ function parseInfo(text, folderName, jsonName) {
   
   if (isPremiumFormat) {
     for (const line of lines) {
-      if (line.includes("🏢 ÓRGÃO:")) {
-        titleLine = line.replace("🏢 ÓRGÃO:", "").trim();
-      } else if (line.includes("🪪 CARGO:")) {
-        cargoLine = line.replace("🪪 CARGO:", "").trim();
-      } else if (line.includes("🧾 BANCA:")) {
-        bancaYearLine = line;
+      const colonIdx = line.indexOf(':');
+      if (colonIdx === -1) continue;
+      
+      const key = line.slice(0, colonIdx).toLowerCase();
+      const value = line.slice(colonIdx + 1).trim();
+      
+      if (key.includes('órgão') || key.includes('orgao') || (key.includes('rg') && key.includes('o') && !key.includes('ca'))) {
+        titleLine = value;
+      } else if (key.includes('cargo')) {
+        cargoLine = value;
+      } else if (key.includes('banca')) {
+        bancaYearLine = value;
       }
     }
   } else {
@@ -81,11 +87,7 @@ function parseInfo(text, folderName, jsonName) {
   const yearMatch = bancaYearLine.match(/\b(20\d{2})\b/);
   let banca = 'A definir';
   
-  let cleanBancaLine = bancaYearLine
-    .replace(/🧾\s*(?:BANCA:)?/i, '')
-    .replace(/\b(20\d{2})\b/, '')
-    .replace(/:/g, '')
-    .trim();
+  let cleanBancaLine = bancaYearLine.replace(/\b(20\d{2})\b/, '').trim();
     
   if (cleanBancaLine) {
     banca = cleanBancaLine;
@@ -117,7 +119,65 @@ function buildTags(text, folderName) {
   if (source.includes('cebraspe')) tags.add('cebraspe');
   if (source.includes('fgv')) tags.add('fgv');
   if (source.includes('inss')) tags.add('inss');
+  if (source.includes('premium')) tags.add('premium');
+  if (source.includes('destaque')) tags.add('destaque');
   return [...tags];
+}
+
+function detectMaterials(data) {
+  const materials = new Set();
+  
+  function scan(obj) {
+    if (!obj) return;
+    if (typeof obj === 'string') {
+      const lower = obj.toLowerCase();
+      if (lower.includes('youtube.com') || lower.includes('youtu.be')) {
+        materials.add('youtube');
+      }
+      if (lower.includes('estrategiaconcursos.com.br') || lower.includes('estrategia.com.br')) {
+        materials.add('estrategia');
+      }
+      if (lower.includes('qconcursos.com')) {
+        materials.add('qconcursos');
+      }
+      if (lower.includes('tecconcursos.com.br')) {
+        materials.add('tecconcursos');
+      }
+    } else if (Array.isArray(obj)) {
+      for (const item of obj) {
+        scan(item);
+      }
+    } else if (typeof obj === 'object') {
+      for (const key in obj) {
+        scan(obj[key]);
+      }
+    }
+  }
+  
+  if (data && data.materias) {
+    scan(data.materias);
+  }
+  return Array.from(materials);
+}
+
+function detectMaterialsFromText(text) {
+  const materials = new Set();
+  const lower = text.toLowerCase();
+  
+  if (lower.includes('qconcursos') || lower.includes('qconcurso')) {
+    materials.add('qconcursos');
+  }
+  if (lower.includes('tecconcursos') || lower.includes('tecconcurso')) {
+    materials.add('tecconcursos');
+  }
+  if (lower.includes('youtube')) {
+    materials.add('youtube');
+  }
+  if (lower.includes('estrategia') || lower.includes('estratégia')) {
+    materials.add('estrategia');
+  }
+  
+  return Array.from(materials);
 }
 
 async function main() {
@@ -146,7 +206,31 @@ async function main() {
 
     await mkdir(targetFolder, { recursive: true });
     await cp(path.join(folderPath, imageFile.name), path.join(targetFolder, imageTarget));
-    await cp(path.join(folderPath, jsonFile.name), path.join(targetFolder, jsonTarget));
+    
+    // Read and parse edital JSON to detect materials
+    const jsonFilePath = path.join(folderPath, jsonFile.name);
+    let autoMaterials = [];
+    let hasDestaqueInJson = false;
+    try {
+      const editalContent = JSON.parse(await readFile(jsonFilePath, 'utf8'));
+      autoMaterials = detectMaterials(editalContent);
+      hasDestaqueInJson = editalContent.destaque === true || 
+                          editalContent.concurso?.destaque === true || 
+                          editalContent.premium === true ||
+                          editalContent.concurso?.premium === true;
+    } catch (e) {}
+
+    // Combine with materials found in text info
+    const textMaterials = detectMaterialsFromText(infoText);
+    const combinedMaterials = Array.from(new Set([...autoMaterials, ...textMaterials]));
+
+    await cp(jsonFilePath, path.join(targetFolder, jsonTarget));
+
+    const isDestaque = info.tags.includes('premium') || 
+                       info.tags.includes('destaque') || 
+                       folder.name.toLowerCase().includes('premium') || 
+                       folder.name.toLowerCase().includes('destaque') ||
+                       hasDestaqueInJson;
 
     editais.push({
       id,
@@ -160,6 +244,8 @@ async function main() {
       imagem: `./data/premium-editais/${id}/${imageTarget}`,
       arquivo: `./data/premium-editais/${id}/${jsonTarget}`,
       arquivoNome: info.arquivoNome,
+      destaque: !!isDestaque,
+      materiais: combinedMaterials,
     });
   }
 

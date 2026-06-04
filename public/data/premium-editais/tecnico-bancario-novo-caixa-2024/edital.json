@@ -1,0 +1,861 @@
+{
+  "type": "track_concursos_template_export",
+  "version": "2.0",
+  "templateKind": "contest",
+  "rights": {
+    "copyright": "Copyright (c) 2026 Michel Araujo. Todos os direitos reservados.",
+    "licenseType": "uso-pessoal-nao-comercial",
+    "allowPersonalUse": true,
+    "allowCommercialUse": false,
+    "allowModification": false,
+    "allowRedistribution": false,
+    "notice": "Este arquivo foi gerado pelo Track Concursos para uso pessoal e nao comercial. Nao e permitida sua revenda, redistribuicao ou modificacao sem autorizacao previa do autor."
+  },
+  "exportOptions": {
+    "includeLinks": false
+  },
+  "concurso": {
+    "nome": "Caixa Econômica Federal",
+    "cargo": "Técnico Bancário Novo",
+    "salario": "R$ 3.762,00",
+    "banca": "CESGRANRIO",
+    "logoEmoji": null,
+    "logoBase64": "data:image/png;base64,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",
+    "dataProva": null,
+    "localProva": "Conforme Cartão de Confirmação de Inscrição",
+    "linkEdital": "https://caixa.cesgranrio.org.br/outros/docs-prd/editais/edital-caixa-nivel-medio-2024-05-22-retificado.pdf",
+    "preEdital": true,
+    "pontuacaoMax": 60,
+    "vagas": "2.000 vagas (1.600 imediatas + 400 CR)",
+    "obs": "Edital Premium da Caixa Econômica Federal 2024 verticalizado.\nCargo: Técnico Bancário Novo (TBN Geral).\nRequisito: Ensino Médio Completo.\n------------------------------------------------------------------------------\nEntre no nosso grupo do telegram para compartilhar seus feedbacks https://t.me/TrackConcursos; considere apoiar o projeto dando uma estrela no github https://github.com/michel-softwares/track-concursos; para outros editais mais completos com seu material (PDFs cadernos de questões do Tec Concursos ou Qconcursos) entre em contato comigo michel.araujo.py@gmail.com. Bons estudos!"
+  },
+  "materias": [
+    {
+      "id": "mprekht0jkhnu",
+      "nome": "LÍNGUA PORTUGUESA",
+      "ordem": 0,
+      "cadernos": [],
+      "topicos": [
+        {
+          "nome": "Compreensão e interpretação de textos.",
+          "ordem": 0,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Argumentação e persuasão.",
+          "ordem": 1,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Comunicação assertiva: linguagem simples, concisa e objetiva.",
+          "ordem": 2,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Organização textual.",
+          "ordem": 3,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Coesão e coerência.",
+          "ordem": 4,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Tipologia textual.",
+          "ordem": 5,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Ortografia oficial.",
+          "ordem": 6,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Acentuação gráfica.",
+          "ordem": 7,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Emprego do sinal indicativo de crase.",
+          "ordem": 8,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Sintaxe da oração e do período.",
+          "ordem": 9,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Pontuação.",
+          "ordem": 10,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Concordância nominal e verbal.",
+          "ordem": 11,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Regência nominal e verbal.",
+          "ordem": 12,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Significação das palavras.",
+          "ordem": 13,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Colocação do pronome átono.",
+          "ordem": 14,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Redação oficial: escrita de textos formais e Manual de Redação da Presidência da República.",
+          "ordem": 15,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Novo Acordo Ortográfico.",
+          "ordem": 16,
+          "cadernos": [],
+          "subtopicos": []
+        }
+      ]
+    },
+    {
+      "id": "mprekhwk0vpmj",
+      "nome": "LÍNGUA INGLESA",
+      "ordem": 1,
+      "cadernos": [],
+      "topicos": [
+        {
+          "nome": "Conhecimento de vocabulário fundamental e de aspectos gramaticais básicos para a compreensão de textos.",
+          "ordem": 0,
+          "cadernos": [],
+          "subtopicos": []
+        }
+      ]
+    },
+    {
+      "id": "mprekhwxa5wwv",
+      "nome": "MATEMÁTICA FINANCEIRA",
+      "ordem": 2,
+      "cadernos": [],
+      "topicos": [
+        {
+          "nome": "Conceitos gerais: valor do dinheiro no tempo, valor presente, valor futuro, juro, taxa de juro, prazo da operação.",
+          "ordem": 0,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Juros Simples.",
+          "ordem": 1,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Juros Compostos.",
+          "ordem": 2,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Séries Uniformes.",
+          "ordem": 3,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Equivalência de Capitais em fluxos regulares ou irregulares: VP, VF, prazos e taxas de retorno.",
+          "ordem": 4,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Sistemas de Amortização de qualquer tipo, incluindo os sistemas com amortizações constantes (SAC) e com prestações constantes (Francês ou PRICE).",
+          "ordem": 5,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Descontos: racional composto e comercial simples.",
+          "ordem": 6,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Sequências numéricas: leis de formação expressas de forma geral ou de forma recursiva; progressões aritméticas; progressões geométricas.",
+          "ordem": 7,
+          "cadernos": [],
+          "subtopicos": []
+        }
+      ]
+    },
+    {
+      "id": "mprekhytqhfhn",
+      "nome": "NOÇÕES DE PROBABILIDADE E ESTATÍSTICA",
+      "ordem": 3,
+      "cadernos": [],
+      "topicos": [
+        {
+          "nome": "Conceitos gerais: variável, população, amostra, frequências absoluta e relativa, gráficos e histogramas.",
+          "ordem": 0,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Medidas de tendência central: média aritmética, média geométrica, média ponderada, moda e mediana.",
+          "ordem": 1,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Medidas de Posição: quartis e percentis.",
+          "ordem": 2,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Medidas de dispersão: amplitude, variância, desvio padrão e coeficiente de variação.",
+          "ordem": 3,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Probabilidade: experimento aleatório, probabilidade condicional, teorema do produto, independência e distribuição binomial.",
+          "ordem": 4,
+          "cadernos": [],
+          "subtopicos": []
+        }
+      ]
+    },
+    {
+      "id": "mprekhzzfod9v",
+      "nome": "COMPORTAMENTOS ÉTICOS E COMPLIANCE",
+      "ordem": 4,
+      "cadernos": [],
+      "topicos": [
+        {
+          "nome": "Prevenção à lavagem de dinheiro: Lei nº 9.613/98 e suas alterações",
+          "ordem": 0,
+          "cadernos": [],
+          "subtopicos": [
+            {
+              "materiaId": "mprekhzzfod9v",
+              "nome": "Circular nº 3.978/2020",
+              "ordem": 0,
+              "cadernos": []
+            },
+            {
+              "materiaId": "mprekhzzfod9v",
+              "nome": "Carta Circular nº 4.001/2020",
+              "ordem": 1,
+              "cadernos": []
+            },
+            {
+              "materiaId": "mprekhzzfod9v",
+              "nome": "Resolução CVM 50/2021.",
+              "ordem": 2,
+              "cadernos": []
+            }
+          ]
+        },
+        {
+          "nome": "Conceitos e medidas de enfrentamento ao assédio moral e sexual.",
+          "ordem": 1,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Atitudes éticas, respeito, valores; noções de ética empresarial; Código de Ética, Conduta e integridade da CAIXA.",
+          "ordem": 2,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Segurança da informação e segurança cibernética: Resolução CMN nº 4.893 de 26 de fevereiro de 2021.",
+          "ordem": 3,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Artigo 37 da Constituição Federal (Princípios da legalidade, impessoalidade, moralidade, publicidade e eficiência).",
+          "ordem": 4,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Sigilo Bancário: Lei Complementar nº 105/2001 e suas alterações.",
+          "ordem": 5,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Lei Geral de Proteção de Dados (LGPD): Lei nº 13.709/2018 e suas alterações.",
+          "ordem": 6,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Legislação anticorrupção: Lei nº 12.846/2013 e Decreto nº 11.129 de 11 de julho de 2022.",
+          "ordem": 7,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Política de Responsabilidade Social, Ambiental e Climática – PRASC CAIXA.",
+          "ordem": 8,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Boas práticas de governança corporativa.",
+          "ordem": 9,
+          "cadernos": [],
+          "subtopicos": []
+        }
+      ]
+    },
+    {
+      "id": "mpreki2s6ckxk",
+      "nome": "CONHECIMENTOS BANCÁRIOS",
+      "ordem": 5,
+      "cadernos": [],
+      "topicos": [
+        {
+          "nome": "Estatuto Social da CAIXA.",
+          "ordem": 0,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Sistema Financeiro Nacional: Estrutura, Órgãos normativos e supervisoras (CMN, BCB, CVM).",
+          "ordem": 1,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Mercado financeiro e seus desdobramentos (monetário, crédito, capitais e cambial).",
+          "ordem": 2,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Os bancos na Era Digital: Atualidade, tendências e desafios.",
+          "ordem": 3,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Internet banking e Mobile banking.",
+          "ordem": 4,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Novos modelos de negócios: Fintechs, startups e big techs.",
+          "ordem": 5,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Sistema de bancos-sombra (Shadow banking).",
+          "ordem": 6,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Moedas e ativos digitais: blockchain, bitcoin e demais criptomoedas.",
+          "ordem": 7,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Correspondentes bancários.",
+          "ordem": 8,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Sistema de pagamentos instantâneos (PIX).",
+          "ordem": 9,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Open finance.",
+          "ordem": 10,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Moedas digitais dos Bancos Centrais: o Real digital (DREX).",
+          "ordem": 11,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Transformação digital no Sistema Financeiro.",
+          "ordem": 12,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Moeda e política monetária: Políticas convencionais e não-convencionais (Quantitative Easing).",
+          "ordem": 13,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Taxa SELIC e operações compromissadas; depósito remunerado dos bancos no BCB.",
+          "ordem": 14,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Orçamento público, títulos do Tesouro Nacional e dívida pública.",
+          "ordem": 15,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Produtos Bancários: Programas sociais e Benefícios do trabalhador.",
+          "ordem": 16,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Noções de cartões de crédito e débito, CDC, crédito rural, poupança, capitalização, consórcio, previdência, investimentos e seguros.",
+          "ordem": 17,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Noções de Mercado de capitais e Mercado de Câmbio.",
+          "ordem": 18,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Regimes de taxas de câmbio fixas, flutuantes e regimes intermediários.",
+          "ordem": 19,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Taxas de câmbio nominais e reais; impactos sobre exportações e importações.",
+          "ordem": 20,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Diferencial de juros interno e externo, prêmio de risco e fluxos de capitais.",
+          "ordem": 21,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Dinâmica do Mercado: Operações no mercado interbancário, tesouraria, varejo e recuperação de crédito.",
+          "ordem": 22,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Garantias do Sistema Financeiro Nacional: aval, fiança, penhor mercantil, alienação fiduciária, hipoteca.",
+          "ordem": 23,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Autorregulação bancária.",
+          "ordem": 24,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Lei Complementar nº 7/1970 (PIS).",
+          "ordem": 25,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Lei nº 8.036/1990 (FGTS): saque, utilização e Certificado de Regularidade do FGTS.",
+          "ordem": 26,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Guia de Recolhimento do FGTS (GRF).",
+          "ordem": 27,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Lei nº 14.601/2023 (Bolsa Família).",
+          "ordem": 28,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Abertura e movimentação de contas: documentos básicos para Pessoa Física e Pessoa Jurídica.",
+          "ordem": 29,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Capacidade civil, representação e domicílio.",
+          "ordem": 30,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Sistema de Pagamentos Brasileiro (SPB).",
+          "ordem": 31,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Lei nº 7.998/1990 (Seguro-Desemprego e Abono Salarial).",
+          "ordem": 32,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Saúde e bem-estar, ergonomia e negociação.",
+          "ordem": 33,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Noções de estratégia empresarial: análise de mercado, forças competitivas, posicionamento e CRM.",
+          "ordem": 34,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Segmentação de mercado.",
+          "ordem": 35,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Características dos serviços: intangibilidade, inseparabilidade, variabilidade e perecibilidade.",
+          "ordem": 36,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Gestão da qualidade em serviços.",
+          "ordem": 37,
+          "cadernos": [],
+          "subtopicos": []
+        }
+      ]
+    },
+    {
+      "id": "mprekiameqgix",
+      "nome": "CONHECIMENTOS DE TECNOLOGIA DA INFORMAÇÃO E COMUNICAÇÃO",
+      "ordem": 6,
+      "cadernos": [],
+      "topicos": [
+        {
+          "nome": "Conhecimento de editor de textos, planilhas e apresentações (Microsoft Office 365 - Word, Excel, PowerPoint e Outlook).",
+          "ordem": 0,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Segurança da informação e gestão de segurança: normas NBR ISO/IEC 27001:2022 e NBR ISO/IEC 27002:2022.",
+          "ordem": 1,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Segurança cibernética: Resolução CMN nº 4.893 de 26 de fevereiro de 2021",
+          "ordem": 2,
+          "cadernos": [],
+          "subtopicos": [
+            {
+              "materiaId": "mprekiameqgix",
+              "nome": "riscos cibernéticos nos negócios.",
+              "ordem": 0,
+              "cadernos": []
+            }
+          ]
+        },
+        {
+          "nome": "Conceitos de organização de arquivos, pastas e gerenciamento de informações.",
+          "ordem": 3,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Redes de computadores: conceitos básicos, Internet, Intranet e comunicação de dados.",
+          "ordem": 4,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Navegadores Web (Microsoft Edge versão 120 e Mozilla Firefox versão 122), busca e pesquisa.",
+          "ordem": 5,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Correio eletrônico, redes sociais (X, Facebook, Linkedin, WhatsApp, YouTube, Instagram e Telegram).",
+          "ordem": 6,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Visão geral sobre sistemas de suporte à decisão e inteligência de negócio.",
+          "ordem": 7,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Conceitos de ferramentas multimídia, áudio e vídeo.",
+          "ordem": 8,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Ferramentas de produtividade e trabalho a distância (Teams, Webex, Zoom, Google Drive e Skype).",
+          "ordem": 9,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Noções de Inteligência Artificial, Analytics, Blockchain, Openbanking, Machine Learning e Data Science.",
+          "ordem": 10,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Noções de Inteligência artificial generativa, algoritmos, ChatGPT (transações via CHATBOT) e Cloud Computing.",
+          "ordem": 11,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Noções de Transformação Digital, Inovação, Líderes Digitais e Agilidade (Agile, Manifesto Ágil e Startups/Fintechs).",
+          "ordem": 12,
+          "cadernos": [],
+          "subtopicos": []
+        }
+      ]
+    },
+    {
+      "id": "mprekiduylz9n",
+      "nome": "CONHECIMENTOS E COMPORTAMENTOS DIGITAIS",
+      "ordem": 7,
+      "cadernos": [],
+      "topicos": [
+        {
+          "nome": "Mindset de crescimento e paradigma da abundância.",
+          "ordem": 0,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Intraempreendedorismo.",
+          "ordem": 1,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Design Thinking e Design de Serviço.",
+          "ordem": 2,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Metodologias ágeis (Lean Manufacturing, SCRUM).",
+          "ordem": 3,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Resolução de problemas complexos, visão sistêmica e estratégica.",
+          "ordem": 4,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Ciência de dados e pensamento computacional.",
+          "ordem": 5,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Análise de Negócios e senso colaborativo.",
+          "ordem": 6,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Liderança, autoliderança e inteligência emocional.",
+          "ordem": 7,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Experiência do consumidor (Customer experience).",
+          "ordem": 8,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Desenvolvimento sustentável (Pacto Global e Objetivos de Desenvolvimento Sustentável - ODS).",
+          "ordem": 9,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Objetivos-chaves para resultados (OKR), gestão do tempo e produtividade.",
+          "ordem": 10,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Técnicas de trabalho à distância e aprendizagem contínua (Life long learning).",
+          "ordem": 11,
+          "cadernos": [],
+          "subtopicos": []
+        }
+      ]
+    },
+    {
+      "id": "mprekigl2mt2d",
+      "nome": "ATENDIMENTO BANCÁRIO",
+      "ordem": 8,
+      "cadernos": [],
+      "topicos": [
+        {
+          "nome": "Ações para aumentar o valor percebido pelo cliente e gestão da experiência do cliente.",
+          "ordem": 0,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Técnicas de vendas: da pré-abordagem ao pós-vendas.",
+          "ordem": 1,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Noções de marketing digital: geração de leads, técnica de copywriting, gatilhos mentais e inbound marketing.",
+          "ordem": 2,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Ética e conduta profissional em vendas e clientecentrismo.",
+          "ordem": 3,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Padrões de qualidade no atendimento, escuta ativa, objetividade e atendimento por canais remotos.",
+          "ordem": 4,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Comportamento do consumidor e sua relação com vendas e negociação.",
+          "ordem": 5,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Política de Relacionamento com o Cliente: Resolução CMN 4.949/2021.",
+          "ordem": 6,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Ouvidoria das instituições financeiras: Resolução CMN nº 4.860 de 23 de outubro de 2020.",
+          "ordem": 7,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Diversidade e Inclusão: Lei Brasileira de Inclusão da Pessoa com Deficiência (Lei nº 13.146/2015).",
+          "ordem": 8,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Código de Proteção e Defesa do Consumidor: Lei nº 8.078/1990 e suas alterações.",
+          "ordem": 9,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Autorregulação bancária: SARB nº 27/2023.",
+          "ordem": 10,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Lei nº 10.741/2003 (Estatuto do Idoso com alterações da Lei nº 14.423/2022)",
+          "ordem": 11,
+          "cadernos": [],
+          "subtopicos": [
+            {
+              "materiaId": "mprekigl2mt2d",
+              "nome": "prioridades de atendimento (Leis 13.466/2017 e 10.048/2000).",
+              "ordem": 0,
+              "cadernos": []
+            }
+          ]
+        },
+        {
+          "nome": "Lei nº 12.764/2012 (Atendimento prioritário a pessoas com Transtorno do Espectro Autista).",
+          "ordem": 12,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Decreto nº 8.727/2016 (Uso do nome social e identidade de gênero de pessoas travestis e transexuais).",
+          "ordem": 13,
+          "cadernos": [],
+          "subtopicos": []
+        },
+        {
+          "nome": "Decreto nº 5.296/2004 (Acessibilidade das pessoas com deficiência) e Decreto nº 5.904/2006 (Direito de ingresso com cão-guia).",
+          "ordem": 14,
+          "cadernos": [],
+          "subtopicos": []
+        }
+      ]
+    }
+  ],
+  "simulados": [],
+  "estrutura": {
+    "cronoWeekly": null,
+    "cronoMats": null,
+    "cronoMode": null,
+    "ciclo": null,
+    "configProva": "{\"groups\":[{\"id\":\"g_conhecimentos_basicos\",\"name\":\"Conhecimentos Básicos\",\"minPts\":12.5,\"q\":25,\"w\":1,\"items\":[{\"id\":\"mprekht0jkhnu\",\"q\":5,\"w\":1,\"minPts\":1},{\"id\":\"mprekhwk0vpmj\",\"q\":5,\"w\":1,\"minPts\":1},{\"id\":\"mprekhwxa5wwv\",\"q\":5,\"w\":1,\"minPts\":1},{\"id\":\"mprekhytqhfhn\",\"q\":5,\"w\":1,\"minPts\":1},{\"id\":\"mprekhzzfod9v\",\"q\":5,\"w\":1,\"minPts\":1}]},{\"id\":\"g_conhecimentos_especificos\",\"name\":\"Conhecimentos Específicos\",\"minPts\":17.5,\"q\":35,\"w\":1,\"items\":[{\"id\":\"mpreki2s6ckxk\",\"q\":15,\"w\":1,\"minPts\":1},{\"id\":\"mprekiameqgix\",\"q\":5,\"w\":1,\"minPts\":1},{\"id\":\"mprekiduylz9n\",\"q\":5,\"w\":1,\"minPts\":1},{\"id\":\"mprekigl2mt2d\",\"q\":10,\"w\":1,\"minPts\":1}]},{\"id\":\"g_redacao\",\"name\":\"Redação\",\"type\":\"redacao\",\"q\":0,\"w\":1,\"pts\":100,\"redType\":\"Dissertativa-Argumentativa\",\"isClassificatoriaOnly\":false,\"minPts\":70,\"items\":[]}],\"scoringMode\":\"tradicional\",\"errorPenalty\":0}"
+  }
+}

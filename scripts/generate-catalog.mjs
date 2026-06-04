@@ -13,6 +13,42 @@ async function exists(filePath) {
   }
 }
 
+function detectMaterials(data) {
+  const materials = new Set();
+  
+  function scan(obj) {
+    if (!obj) return;
+    if (typeof obj === 'string') {
+      const lower = obj.toLowerCase();
+      if (lower.includes('youtube.com') || lower.includes('youtu.be')) {
+        materials.add('youtube');
+      }
+      if (lower.includes('estrategiaconcursos.com.br') || lower.includes('estrategia.com.br')) {
+        materials.add('estrategia');
+      }
+      if (lower.includes('qconcursos.com')) {
+        materials.add('qconcursos');
+      }
+      if (lower.includes('tecconcursos.com.br')) {
+        materials.add('tecconcursos');
+      }
+    } else if (Array.isArray(obj)) {
+      for (const item of obj) {
+        scan(item);
+      }
+    } else if (typeof obj === 'object') {
+      for (const key in obj) {
+        scan(obj[key]);
+      }
+    }
+  }
+  
+  if (data && data.materias) {
+    scan(data.materias);
+  }
+  return Array.from(materials);
+}
+
 async function main() {
   const entries = await readdir(root, { withFileTypes: true });
   const editais = [];
@@ -25,6 +61,23 @@ async function main() {
 
     const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
     const publicFolder = path.posix.join(root.replaceAll('\\', '/'), entry.name);
+    
+    // Auto-detect materials from JSON file
+    const editalPath = path.join(folder, manifest.arquivo || 'edital.json');
+    let autoMaterials = [];
+    try {
+      if (await exists(editalPath)) {
+        const editalContent = JSON.parse(await readFile(editalPath, 'utf8'));
+        autoMaterials = detectMaterials(editalContent);
+      }
+    } catch (e) {}
+
+    const isDestaque = manifest.destaque || 
+                       manifest.tags?.includes('destaque') || 
+                       manifest.tags?.includes('premium') || 
+                       entry.name.toLowerCase().includes('premium') || 
+                       entry.name.toLowerCase().includes('destaque');
+
     editais.push({
       id: manifest.id || entry.name,
       titulo: manifest.titulo,
@@ -35,6 +88,8 @@ async function main() {
       tags: manifest.tags || [],
       imagem: `${publicFolder}/${manifest.imagem || 'capa.png'}`,
       arquivo: `${publicFolder}/${manifest.arquivo || 'edital.json'}`,
+      destaque: !!isDestaque,
+      materiais: manifest.materiais || autoMaterials,
     });
   }
 
