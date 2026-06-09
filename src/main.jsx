@@ -654,13 +654,13 @@ function PremiumEditalsPage() {
             href="https://github.com/michel-softwares/track-concursos/stargazers"
             target="_blank"
             rel="noreferrer"
-            className="github-star-custom-button"
+            className="github-star-social-btn"
           >
-            <div className="github-star-button-content">
-              <Github size={14} />
+            <span className="github-btn-main">
+              <Github size={14} className="github-btn-icon" />
               <span>Star</span>
-            </div>
-            <span className="github-star-count">
+            </span>
+            <span className="github-btn-count">
               {repoStars !== null ? repoStars : '...'}
             </span>
           </a>

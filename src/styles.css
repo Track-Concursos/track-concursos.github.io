@@ -956,47 +956,83 @@ img {
   overflow-wrap: anywhere;
 }
 
-.github-star-custom-button {
+.github-star-social-btn {
   display: inline-flex;
   align-items: center;
   margin-top: 16px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #fff;
   text-decoration: none;
-  overflow: hidden;
-  height: 28px;
-  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 14px;
+  height: 20px;
+  user-select: none;
   align-self: flex-start;
 }
 
-.github-star-custom-button:hover {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.25);
-  transform: translateY(-1px);
-}
-
-.github-star-button-content {
+.github-btn-main {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 0 10px;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.03);
-  border-right: 1px solid var(--line);
+  gap: 4px;
+  height: 20px;
+  padding: 0 6px;
+  color: #24292e;
+  background: #eff3f6;
+  background-image: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%);
+  border: 1px solid rgba(27, 31, 35, 0.2);
+  border-radius: 3px;
+  cursor: pointer;
 }
 
-.github-star-count {
+.github-btn-main:hover {
+  background-color: #e6ebf1;
+  background-image: linear-gradient(-180deg, #f0f3f6 0%, #e6ebf1 90%);
+  border-color: rgba(27, 31, 35, 0.35);
+}
+
+.github-btn-icon {
+  color: #24292e !important;
+  fill: #24292e;
+}
+
+.github-btn-count {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  padding: 0 10px;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.01);
-  color: #c6d1e8;
-  font-weight: 700;
+  height: 20px;
+  margin-left: 6px;
+  padding: 0 6px;
+  color: #24292e;
+  background: #fff;
+  border: 1px solid rgba(27, 31, 35, 0.2);
+  border-radius: 3px;
+}
+
+.github-btn-count::before,
+.github-btn-count::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.github-btn-count::before {
+  left: -6px;
+  border-width: 4px 5px 4px 0;
+  border-color: transparent rgba(27, 31, 35, 0.2) transparent transparent;
+}
+
+.github-btn-count::after {
+  left: -5px;
+  border-width: 4px 5px 4px 0;
+  border-color: transparent #fff transparent transparent;
+}
+
+.github-btn-count:hover {
+  color: #0366d6;
 }
 
 .search-panel {
