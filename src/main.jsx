@@ -542,6 +542,21 @@ function PremiumEditalsPage() {
   const [catalog, setCatalog] = useState([]);
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState('Carregando catálogo...');
+  const [repoStars, setRepoStars] = useState(null);
+
+  useEffect(() => {
+    fetch('https://api.github.com/repos/michel-softwares/track-concursos')
+      .then((response) => {
+        if (!response.ok) throw new Error();
+        return response.json();
+      })
+      .then((data) => {
+        if (data.stargazers_count !== undefined) {
+          setRepoStars(data.stargazers_count);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -639,12 +654,15 @@ function PremiumEditalsPage() {
             href="https://github.com/michel-softwares/track-concursos/stargazers"
             target="_blank"
             rel="noreferrer"
-            className="github-star-shields-link"
+            className="github-star-custom-button"
           >
-            <img
-              src="https://img.shields.io/github/stars/michel-softwares/track-concursos?label=Star&style=social"
-              alt="GitHub Stars"
-            />
+            <div className="github-star-button-content">
+              <Github size={14} />
+              <span>Star</span>
+            </div>
+            <span className="github-star-count">
+              {repoStars !== null ? repoStars : '...'}
+            </span>
           </a>
         </div>
       </div>

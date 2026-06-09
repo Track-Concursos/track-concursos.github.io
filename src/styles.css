@@ -956,20 +956,47 @@ img {
   overflow-wrap: anywhere;
 }
 
-.github-star-shields-link {
-  display: inline-block;
+.github-star-custom-button {
+  display: inline-flex;
+  align-items: center;
   margin-top: 16px;
-  transition: transform 160ms ease, filter 160ms ease;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  overflow: hidden;
+  height: 28px;
+  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+  align-self: flex-start;
 }
 
-.github-star-shields-link:hover {
-  transform: scale(1.03);
-  filter: brightness(1.05);
+.github-star-custom-button:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
 }
 
-.github-star-shields-link img {
-  display: block;
-  height: 20px;
+.github-star-button-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border-right: 1px solid var(--line);
+}
+
+.github-star-count {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.01);
+  color: #c6d1e8;
+  font-weight: 700;
 }
 
 .search-panel {
