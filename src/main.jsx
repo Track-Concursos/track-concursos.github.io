@@ -15,12 +15,9 @@ import {
   Layers3,
   LibraryBig,
   Menu,
-  MonitorCheck,
   Search,
-  ShieldCheck,
   Sparkles,
   Star,
-  Target,
   X,
 } from 'lucide-react';
 import './styles.css';
@@ -185,6 +182,7 @@ function SiteHeader({ route, goTo, menuOpen, setMenuOpen, latestVersion }) {
 
 function HomePage({ goTo }) {
   const [release, setRelease] = useState(fallbackRelease);
+  const [repoStars, setRepoStars] = useState(null);
   const [starLightboxOpen, setStarLightboxOpen] = useState(false);
 
   useEffect(() => {
@@ -203,15 +201,31 @@ function HomePage({ goTo }) {
       .catch(() => {});
   }, []);
 
+  useEffect(() => {
+    fetch('https://api.github.com/repos/michel-softwares/track-concursos')
+      .then((response) => {
+        if (!response.ok) throw new Error('Repositório indisponível');
+        return response.json();
+      })
+      .then((data) => {
+        if (data.stargazers_count !== undefined) {
+          setRepoStars(data.stargazers_count);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <>
       <section className="hero-section">
         <div className="hero-copy">
           <p className="eyebrow">Organizador de estudos 100% gratuito</p>
-          <h1>Organize seus estudos com o Track Concursos!</h1>
+          <h1>Organize seu edital. Planeje sua aprovação.</h1>
           <p className="hero-text">
-            O Track Concursos veio para facilitar a vida dos concurseiros que gostam de organizar seus estudos por planilhas.
-            Com ele é possível verticalizar editais automaticamente; cadastrar todas as informações do Edital; configurar um painel de prova que lhe mostrará a nota real dos seus simulados; linkar PDFs, cadernos de questões, videoaulas em cada tópico para iniciar sua sessão de estudos com um clique. Também é possível analisar gráficos com suas estatísticas de estudos e muito mais! 
+            O Track Concursos permite que você transforme o edital do seu concurso ou vestibular em uma grade completa de estudos, organizada por matérias, tópicos e subtópicos. Planeje sua rotina com cronogramas inteligentes, registre horas, questões e simulados, acompanhe seu desempenho e descubra exatamente onde revisar para evoluir com estratégia rumo à aprovação.
+          </p>
+          <p className="hero-text hero-text-secondary">
+            Vincule seus materiais de estudo — PDFs, videoaulas, flashcards e cadernos de questões — a cada tópico e tenha tudo à mão no momento de estudar.
           </p>
           <div className="hero-actions">
             <a className="primary-button download-release-button" href={release.downloadUrl}>
@@ -241,13 +255,54 @@ function HomePage({ goTo }) {
         <SectionHeading
           eyebrow="Por que usar"
           title="Feito para registrar toda a sua jornada de estudos até a sonhada aprovação."
-          text="Chega de perder tempo configurando planilhas, organizando pastas com editais e planilhas avulsas para cada concurso que você realiza, o Track Concursos foi pensado para fazer você aposentar as planilhas de vez e reunir todas as informações e estatísticas dos seus estudos em um lugar só."
+          text="Sua preparação não precisa ficar dividida entre planilhas, editais e materiais espalhados em várias pastas. Com o Track Concursos, você mantém tudo organizado em um só lugar e acompanha seu histórico, planejamento e evolução ao longo de cada concurso."
         />
         <div className="feature-grid">
-          <FeatureCard icon={<Target />} title="Prioridade por concurso" text="Você pode criar vários cards de concursos e priorizar aqueles que você deseja focar no momento." />
-          <FeatureCard icon={<MonitorCheck />} title="Gráficos de Estatísticas" text="Visualize suas estatísticas de estudos em gráficos claros e intuitivos para uma análise pós-prova precisa ou durante seus estudos." />
-          <FeatureCard icon={<FileJson />} title="Importação instantânea de Editais" text="Importe editais prontos já organizados para iniciar os estudos mais rapidamente." />
-          <FeatureCard icon={<ShieldCheck />} title="Backup e continuidade" text="Você pode criar perfis diferentes e salvar seu progresso individualmente." />
+          <FeatureCard
+            icon="./assets/remix/focus-3-line.svg"
+            title="Defina sua prioridade"
+            text="Crie vários planos de estudo e escolha qual concurso será sua prioridade. Mude o foco a qualquer momento sem perder a organização e o progresso dos outros planos."
+          />
+          <FeatureCard
+            icon="./assets/remix/line-chart-line.svg"
+            title="Gráficos e estatísticas"
+            text="Acompanhe horas estudadas, questões e simulados em gráficos claros. Identifique seus pontos fortes e fracos durante a preparação ou após a prova."
+          />
+          <FeatureCard
+            icon="./assets/remix/file-transfer-line.svg"
+            title="Importação de editais"
+            text="Use uma estrutura compatível com ferramentas externas de inteligência artificial para planejar seus estudos e importar tudo para o Track Concursos. Você também pode baixar Editais Premium já organizados."
+          />
+          <FeatureCard
+            icon="./assets/remix/hard-drive-2-line.svg"
+            title="Perfis e dados locais"
+            text="Crie perfis separados para manter planejamentos e progressos individuais. Seus dados ficam armazenados localmente no computador."
+          />
+          <FeatureCard
+            icon="./assets/remix/award-line.svg"
+            title="Simulados com nota real"
+            text="Registre simulados no formato configurado no Painel da Prova e obtenha uma nota calculada conforme as regras do concurso. Compatível com avaliações CEBRASPE e provas divididas por blocos."
+          />
+          <FeatureCard
+            icon="./assets/remix/history-line.svg"
+            title="Histórico de concursos"
+            text="Registre os concursos que já realizou, incluindo gabaritos, notas, classificação e links importantes. Mantenha todo o seu histórico acessível sem procurar antigos e-mails da banca."
+          />
+          <FeatureCard
+            icon="./assets/remix/links-line.svg"
+            title="Estude com seus materiais"
+            text="Vincule PDFs, videoaulas do YouTube, flashcards e cadernos de questões diretamente aos tópicos do edital. Importe também materiais previamente vinculados com o auxílio de ferramentas externas de inteligência artificial."
+          />
+          <FeatureCard
+            icon="./assets/remix/calendar-schedule-line.svg"
+            title="Cronogramas inteligentes"
+            text="Crie planejamentos que consideram os pesos das disciplinas e suas prioridades. Escolha entre um cronograma agendado ou um ciclo de estudos adaptado à sua rotina."
+          />
+          <FeatureCard
+            icon="./assets/remix/stack-line.svg"
+            title="Flashcards"
+            text="Crie, organize, importe e exporte flashcards para revisar os conteúdos mais importantes da sua preparação."
+          />
         </div>
       </section>
 
@@ -276,12 +331,19 @@ function HomePage({ goTo }) {
             mostra que a ferramenta está sendo útil e incentiva novas melhorias.
           </p>
           <a
-            className="primary-button"
+            className="primary-button github-project-button"
             href="https://github.com/michel-softwares/track-concursos"
             target="_blank"
             rel="noreferrer"
           >
-            Acessar página do projeto no GitHub <Github size={18} />
+            <span>Dar uma estrela no GitHub</span>
+            <span
+              className="github-project-star-count"
+              aria-label={repoStars !== null ? `${repoStars} estrelas` : 'Carregando estrelas'}
+            >
+              <Star size={15} fill="currentColor" />
+              <strong>{repoStars !== null ? repoStars : '...'}</strong>
+            </span>
           </a>
         </div>
         <button
@@ -447,14 +509,18 @@ function GuideDetail({ guide }) {
 function ScreenshotCarousel({ screenshots }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [extendedDelay, setExtendedDelay] = useState(false);
 
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % screenshots.length);
-    }, 5500);
+    if (lightboxOpen) return undefined;
 
-    return () => window.clearInterval(timer);
-  }, [screenshots.length]);
+    const timer = window.setTimeout(() => {
+      setActiveIndex((current) => (current + 1) % screenshots.length);
+      setExtendedDelay(false);
+    }, extendedDelay ? 11000 : 5500);
+
+    return () => window.clearTimeout(timer);
+  }, [activeIndex, extendedDelay, lightboxOpen, screenshots.length]);
 
   useEffect(() => {
     if (!lightboxOpen) return undefined;
@@ -474,12 +540,33 @@ function ScreenshotCarousel({ screenshots }) {
     };
   }, [lightboxOpen]);
 
+  const pauseBeforeAutoPlay = () => {
+    setExtendedDelay(true);
+  };
+
+  const openLightbox = () => {
+    pauseBeforeAutoPlay();
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    pauseBeforeAutoPlay();
+    setLightboxOpen(false);
+  };
+
   const previous = () => {
+    pauseBeforeAutoPlay();
     setActiveIndex((current) => (current === 0 ? screenshots.length - 1 : current - 1));
   };
 
   const next = () => {
+    pauseBeforeAutoPlay();
     setActiveIndex((current) => (current + 1) % screenshots.length);
+  };
+
+  const selectScreenshot = (index) => {
+    pauseBeforeAutoPlay();
+    setActiveIndex(index);
   };
 
   return (
@@ -489,7 +576,7 @@ function ScreenshotCarousel({ screenshots }) {
           <button
             key={screenshot.src}
             className={index === activeIndex ? 'carousel-slide active' : 'carousel-slide'}
-            onClick={() => setLightboxOpen(true)}
+            onClick={openLightbox}
             aria-label="Abrir print em tela cheia"
           >
             <img src={screenshot.src} alt={screenshot.alt} />
@@ -505,7 +592,7 @@ function ScreenshotCarousel({ screenshots }) {
             <button
               key={screenshot.src}
               className={index === activeIndex ? 'carousel-dot active' : 'carousel-dot'}
-              onClick={() => setActiveIndex(index)}
+              onClick={() => selectScreenshot(index)}
               aria-label={`Mostrar print ${index + 1}`}
             />
           ))}
@@ -516,9 +603,9 @@ function ScreenshotCarousel({ screenshots }) {
       </div>
       {lightboxOpen && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label="Prints do Track Concursos em tela cheia">
-            <button className="lightbox-backdrop" onClick={() => setLightboxOpen(false)} aria-label="Fechar visualização" />
+            <button className="lightbox-backdrop" onClick={closeLightbox} aria-label="Fechar visualização" />
           <div className="lightbox-content">
-            <button className="lightbox-close" onClick={() => setLightboxOpen(false)} aria-label="Fechar">
+            <button className="lightbox-close" onClick={closeLightbox} aria-label="Fechar">
               <X size={22} />
             </button>
             <button className="lightbox-arrow left" onClick={previous} aria-label="Print anterior">
@@ -620,13 +707,8 @@ function PremiumEditalsPage() {
       });
     }
 
-    // Sort: destaque (premium) first, then by update date descending
+    // Sort by update date descending
     return [...list].sort((a, b) => {
-      const aDestaque = a.destaque ? 1 : 0;
-      const bDestaque = b.destaque ? 1 : 0;
-      if (aDestaque !== bDestaque) {
-        return bDestaque - aDestaque;
-      }
       const timeA = a.atualizadoEm ? new Date(a.atualizadoEm).getTime() : 0;
       const timeB = b.atualizadoEm ? new Date(b.atualizadoEm).getTime() : 0;
       if (timeA !== timeB) {
@@ -702,12 +784,7 @@ function PremiumEditalsPage() {
           }
 
           return (
-            <article className={`edital-card ${item.destaque ? 'destaque' : ''}`} key={item.id}>
-              {item.destaque && (
-                <span className="destaque-badge">
-                  <Star size={12} fill="currentColor" /> Premium
-                </span>
-              )}
+            <article className="edital-card" key={item.id}>
               {item.materiais && item.materiais.length > 0 && (
                 <div className="edital-materials-badges premium-badge-box">
                   <span className="premium-badge-text">{badgeText}</span>
@@ -749,7 +826,7 @@ function PremiumEditalsPage() {
                     <span>{item.examNotice.text}</span>
                   </div>
                 )}
-                <button className={`download-button ${item.destaque ? 'button-destaque' : ''}`} onClick={() => downloadCatalogFile(item)}>
+                <button className="download-button" onClick={() => downloadCatalogFile(item)}>
                   Baixar JSON <Download size={17} />
                 </button>
               </div>
@@ -1154,7 +1231,12 @@ function Metric({ value, label }) {
 function FeatureCard({ icon, title, text }) {
   return (
     <article className="feature-card">
-      <div className="feature-icon">{icon}</div>
+      <div className="feature-icon" aria-hidden="true">
+        <span
+          className="feature-icon-symbol"
+          style={{ '--feature-icon': `url("${icon}")` }}
+        />
+      </div>
       <h3>{title}</h3>
       <p>{text}</p>
     </article>
