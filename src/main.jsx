@@ -1232,10 +1232,7 @@ function FeatureCard({ icon, title, text }) {
   return (
     <article className="feature-card">
       <div className="feature-icon" aria-hidden="true">
-        <span
-          className="feature-icon-symbol"
-          style={{ '--feature-icon': `url("${icon}")` }}
-        />
+        <img className="feature-icon-symbol" src={icon} alt="" />
       </div>
       <h3>{title}</h3>
       <p>{text}</p>
