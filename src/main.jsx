@@ -733,7 +733,7 @@ function PremiumEditalsPage() {
           <strong>Editais Premium gratuitos</strong>
           <span>esses editais são organizados por mim e disponibilizados gratuitamente, se não encontrou um edital para o concurso que você quer estudar entre em contato comigo e solicite um Edital Premium GRÁTIS! Peço apenas que apoie o projeto dando uma Estrela no repositório Github</span>
           <a
-            href="https://github.com/michel-softwares/track-concursos/stargazers"
+            href="https://github.com/michel-softwares/track-concursos"
             target="_blank"
             rel="noreferrer"
             className="github-star-social-btn"
