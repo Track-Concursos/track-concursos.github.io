@@ -34,7 +34,7 @@ export const guideGroups = [
     description: 'Espaço para guias futuros sobre ferramentas, automações e prompts com IA.',
     icon: Sparkles,
     guides: [
-      { title: 'Como verticalizar automaticamente um edital com auxílio de uma IA', slug: 'links-sugeridos', status: 'Em breve' },
+      { title: 'Como verticalizar automaticamente um edital com auxílio de uma IA', slug: 'links-sugeridos', status: 'Pronto' },
       { title: 'Como exportar um Edital feito por você', slug: 'catalogos-drive', status: 'Em breve' },
       { title: 'Linkar automaticamente todos os seus livros PDFs nos tópicos', slug: 'revisao', status: 'Em breve' },
       { title: 'Adicionar matérias extras com auxílio de IA', slug: 'materias-extras-ia', status: 'Em breve' },
@@ -101,5 +101,20 @@ export const guideDetails = {
     title: 'Como preencher o Painel da Prova',
     description:
       'Aprenda como preencher o Painel da Prova no Track Concursos para acompanhar seu desempenho.',
+  },
+  'links-sugeridos': {
+    category: 'Recursos avançados',
+    title: 'Como verticalizar automaticamente um edital com auxílio de uma IA',
+    description:
+      'Aprenda o passo a passo para verticalizar um edital de forma automática com o auxílio de uma IA e importar tudo no Track Concursos.',
+    sections: [
+      {
+        title: 'Vídeo tutorial',
+        paragraphs: [
+          'Assista ao vídeo abaixo para ver o passo a passo completo de como verticalizar automaticamente um edital com auxílio de uma IA:',
+        ],
+        video: 'https://www.youtube.com/watch?v=X4ldPas-85g',
+      },
+    ],
   },
 };
