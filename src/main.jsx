@@ -11,6 +11,7 @@ import {
   FileJson,
   FileText,
   Github,
+  Globe,
   GraduationCap,
   Layers3,
   LibraryBig,
@@ -491,15 +492,30 @@ function GuideDetail({ guide }) {
 
         <div className="guide-download-cta">
           <p className="eyebrow">Pronto para começar?</p>
-          <h2>Baixe o Track Concursos</h2>
-          <p>Clique no botão abaixo para baixar a versão mais recente do aplicativo.</p>
-          <a className="primary-button download-release-button" href={release.downloadUrl}>
-            <span>
-              Baixe a versão mais atual
-              <small>{release.version}</small>
-            </span>
-            <Download size={18} />
-          </a>
+          <div className="cta-columns">
+            <div className="cta-card">
+              <h2>Baixe o Track Concursos</h2>
+              <p>Clique no botão abaixo para baixar a versão mais recente do aplicativo para desktop.</p>
+              <a className="primary-button download-release-button" href={release.downloadUrl}>
+                <span>
+                  Baixe a versão mais atual
+                  <small>{release.version}</small>
+                </span>
+                <Download size={18} />
+              </a>
+            </div>
+            <div className="cta-card">
+              <h2>Ou cadastre-se e use o Track Concursos online</h2>
+              <p>Compatível com qualquer dispositivo!</p>
+              <a className="web-cta-button" href="https://trackconcursos.vercel.app/" target="_blank" rel="noreferrer">
+                <span>
+                  Acessar o Track Concursos Web
+                  <small>Grátis e direto no navegador</small>
+                </span>
+                <Globe size={18} />
+              </a>
+            </div>
+          </div>
         </div>
       </article>
     </section>
