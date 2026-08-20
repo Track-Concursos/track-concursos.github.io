@@ -229,6 +229,13 @@ function HomePage({ goTo }) {
             Vincule seus materiais de estudo — PDFs, videoaulas, flashcards e cadernos de questões — a cada tópico e tenha tudo à mão no momento de estudar.
           </p>
           <div className="hero-actions">
+            <a className="web-cta-button" href="https://trackconcursos.vercel.app/" target="_blank" rel="noreferrer">
+              <span>
+                Use o Track Concursos online
+                <small>Grátis e direto no navegador</small>
+              </span>
+              <Globe size={18} />
+            </a>
             <a className="primary-button download-release-button" href={release.downloadUrl}>
               <span>
                 Baixe a versão mais atual

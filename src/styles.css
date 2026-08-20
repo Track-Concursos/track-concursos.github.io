@@ -1570,8 +1570,13 @@ img {
   }
 
   .primary-button,
-  .secondary-button {
+  .secondary-button,
+  .web-cta-button {
     width: 100%;
+  }
+
+  .hero-actions .web-cta-button {
+    justify-content: center;
   }
 
   .results-toolbar,
