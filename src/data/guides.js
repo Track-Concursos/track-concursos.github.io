@@ -2,11 +2,12 @@ import { GraduationCap, HardDriveDownload, Layers3, Sparkles } from 'lucide-reac
 
 export const guideGroups = [
   {
-    title: 'Instalação',
-    description: 'Requisitos e instalação',
+    title: 'Instalação ou website',
+    description: 'Requisitos, instalação e acesso ao site.',
     icon: HardDriveDownload,
     guides: [
       { title: 'Windows 10 e 11: Requisitos e link para download', slug: 'requisitos-instalacao', status: 'Pronto' },
+      { title: 'Como estudar na versão site do Track Concursos', slug: 'versao-web', status: 'Pronto' },
     ],
   },
   {
@@ -114,6 +115,21 @@ export const guideDetails = {
           'Assista ao vídeo abaixo para ver o passo a passo completo de como verticalizar automaticamente um edital com auxílio de uma IA:',
         ],
         video: 'https://www.youtube.com/watch?v=X4ldPas-85g',
+      },
+    ],
+  },
+  'versao-web': {
+    category: 'Instalação ou website',
+    title: 'Como estudar na versão site do Track Concursos',
+    description:
+      'Aprenda como usar o Track Concursos diretamente no navegador, sem precisar instalar nada, e estude de qualquer dispositivo.',
+    sections: [
+      {
+        title: 'Vídeo tutorial',
+        paragraphs: [
+          'Assista ao vídeo abaixo para ver o passo a passo completo de como estudar na versão site do Track Concursos:',
+        ],
+        video: 'https://www.youtube.com/watch?v=A0sItMzA08I',
       },
     ],
   },
