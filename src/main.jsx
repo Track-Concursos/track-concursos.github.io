@@ -333,7 +333,7 @@ function HomePage({ goTo }) {
       <section className="github-star-section">
         <div className="github-star-copy">
           <p className="eyebrow">Apoie o projeto</p>
-          <h2>Se gostou do Track Concursos, dê uma estrela no Github!</h2>
+          <h2>Apoie o projeto com uma estrela no GitHub!</h2>
           <p>
             O projeto é gratuito e público. Dar uma estrela aumenta a visibilidade,
             mostra que a ferramenta está sendo útil e incentiva novas melhorias.
@@ -344,7 +344,7 @@ function HomePage({ goTo }) {
             target="_blank"
             rel="noreferrer"
           >
-            <span>Dar uma estrela no GitHub</span>
+            <span>Apoiar o projeto no GitHub</span>
             <span
               className="github-project-star-count"
               aria-label={repoStars !== null ? `${repoStars} estrelas` : 'Carregando estrelas'}
