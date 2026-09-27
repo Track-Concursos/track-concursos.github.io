@@ -258,10 +258,9 @@ function HomePage({ goTo }) {
             </button>
           </div>
         </div>
-        <figure className="hero-visual">
-          <img src="./assets/hero-photo.png" alt="Material visual do Track Concursos" />
-          <figcaption className="hero-visual-caption">Seu edital, matérias e progresso em um só lugar.</figcaption>
-        </figure>
+        <div className="hero-visual">
+          <img src="./assets/login-track-study-hero.png" alt="Track Concursos aberto em um notebook durante os estudos" />
+        </div>
       </section>
 
       <section className="feature-band">
