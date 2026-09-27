@@ -11,7 +11,6 @@ import {
   FileJson,
   FileText,
   Github,
-  Globe,
   GraduationCap,
   Layers3,
   LibraryBig,
@@ -221,7 +220,10 @@ function HomePage({ goTo }) {
       <section className="hero-section">
         <div className="hero-copy">
           <p className="eyebrow">Organizador de estudos 100% gratuito</p>
-          <h1>Organize seu edital. Planeje sua aprovação.</h1>
+          <h1>
+            <span>Organize seu edital.</span>
+            <span className="hero-heading-accent">Planeje sua aprovação.</span>
+          </h1>
           <p className="hero-text">
             O Track Concursos permite que você transforme o edital do seu concurso ou vestibular em uma grade completa de estudos, organizada por matérias, tópicos e subtópicos. Planeje sua rotina com cronogramas inteligentes, registre horas, questões e simulados, acompanhe seu desempenho e descubra exatamente onde revisar para evoluir com estratégia rumo à aprovação.
           </p>
@@ -231,32 +233,35 @@ function HomePage({ goTo }) {
           <div className="hero-actions">
             <a className="web-cta-button" href="https://trackconcursos.vercel.app/" target="_blank" rel="noreferrer">
               <span>
-                Use o Track Concursos online
-                <small>Grátis e direto no navegador</small>
+                <strong>Track Concursos online</strong>
+                <small>Versão 1.1.54</small>
               </span>
-              <Globe size={18} />
+              <img className="hero-cta-logo" src="./assets/track-logo.png" alt="" />
             </a>
             <a className="primary-button download-release-button" href={release.downloadUrl}>
               <span>
-                Baixe a versão mais atual
-                <small>{release.version}</small>
+                <strong>Baixar para Windows</strong>
+                <small>Instalador · {release.version}</small>
               </span>
               <Download size={18} />
             </a>
-            <button className="secondary-button" onClick={() => goTo('guias')}>
-              Ver Guias <BookOpenCheck size={18} />
+          </div>
+          <div className="hero-quick-links" aria-label="Mais recursos">
+            <button className="hero-quick-link" onClick={() => goTo('guias')}>
+              <BookOpenCheck size={15} /> Ver guias
             </button>
-            <button className="secondary-button" onClick={() => goTo('editais')}>
-              Editais Prontos <FileJson size={18} />
+            <button className="hero-quick-link" onClick={() => goTo('editais')}>
+              <FileJson size={15} /> Editais prontos
             </button>
-            <button className="secondary-button release-nav-button" onClick={() => goTo('release')}>
-              Track Concursos {release.version} <FileText size={18} />
+            <button className="hero-quick-link" onClick={() => goTo('release')}>
+              <FileText size={15} /> Novidades da versão
             </button>
           </div>
         </div>
-        <div className="hero-visual">
+        <figure className="hero-visual">
           <img src="./assets/hero-photo.png" alt="Material visual do Track Concursos" />
-        </div>
+          <figcaption className="hero-visual-caption">Seu edital, matérias e progresso em um só lugar.</figcaption>
+        </figure>
       </section>
 
       <section className="feature-band">
