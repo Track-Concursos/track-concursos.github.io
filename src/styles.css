@@ -281,32 +281,14 @@ img {
 }
 
 .hero-visual {
-  position: relative;
-  isolation: isolate;
   margin: 0;
-  padding: 9px;
-  border: 1px solid rgba(214, 228, 251, 0.17);
-  border-radius: 24px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.025) 55%);
-  box-shadow: 0 36px 80px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(255, 255, 255, 0.025);
-  transform: rotateY(-3deg) rotateX(1deg);
-}
-
-.hero-visual::before {
-  content: "";
-  position: absolute;
-  inset: 8% 8% 12%;
-  z-index: -1;
-  border-radius: 50%;
-  background: rgba(46, 140, 255, 0.22);
-  filter: blur(64px);
 }
 
 .hero-visual img {
+  display: block;
   width: 100%;
   max-width: 100%;
-  border-radius: 17px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.24);
+  height: auto;
 }
 
 .feature-band,
@@ -1604,10 +1586,6 @@ img {
 
   .hero-visual img {
     width: 100%;
-  }
-
-  .hero-visual {
-    transform: none;
   }
 
   .feature-grid,
