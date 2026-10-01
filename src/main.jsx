@@ -68,7 +68,34 @@ function renderContent(value) {
 const catalogUrl =
   import.meta.env.VITE_EDITAIS_CATALOG_URL ||
   'https://raw.githubusercontent.com/michel-softwares/Editais-Premium/main/catalog.json';
+const trackWebChangelogDataUrl = 'https://trackconcursos.vercel.app/changelog-data.js';
+const trackWebVersionCacheKey = 'track-concursos-web-version';
 const localCatalogUrl = './data/catalog.sample.json';
+
+function readCachedTrackWebVersion() {
+  try {
+    return window.localStorage.getItem(trackWebVersionCacheKey) || '';
+  } catch {
+    return '';
+  }
+}
+
+function parseLatestTrackWebVersion(source) {
+  const assignmentStart = source.indexOf('window.TRACK_CHANGELOG');
+  if (assignmentStart < 0) return '';
+
+  const arrayStart = source.indexOf('[', assignmentStart);
+  const arrayEnd = source.lastIndexOf('];');
+  if (arrayStart < 0 || arrayEnd < arrayStart) return '';
+
+  try {
+    const releases = JSON.parse(source.slice(arrayStart, arrayEnd + 1));
+    return releases.find((release) => release && !release.draft && typeof release.version === 'string')?.version || '';
+  } catch {
+    return '';
+  }
+}
+
 const fallbackRelease = {
   version: 'v1.0.2',
   name: 'Track Concursos v1.0.2',
@@ -182,8 +209,40 @@ function SiteHeader({ route, goTo, menuOpen, setMenuOpen, latestVersion }) {
 
 function HomePage({ goTo }) {
   const [release, setRelease] = useState(fallbackRelease);
+  const [webVersion, setWebVersion] = useState(readCachedTrackWebVersion);
   const [repoStars, setRepoStars] = useState(null);
   const [starLightboxOpen, setStarLightboxOpen] = useState(false);
+
+  useEffect(() => {
+    let disposed = false;
+
+    const refreshWebVersion = async () => {
+      try {
+        const response = await fetch(trackWebChangelogDataUrl, { cache: 'no-store' });
+        if (!response.ok) throw new Error('Versão do Track Web indisponível');
+
+        const latestVersion = parseLatestTrackWebVersion(await response.text());
+        if (!latestVersion || disposed) return;
+
+        setWebVersion(latestVersion);
+        try {
+          window.localStorage.setItem(trackWebVersionCacheKey, latestVersion);
+        } catch {
+          // A versão continua funcionando mesmo quando o navegador bloqueia o armazenamento local.
+        }
+      } catch {
+        // Mantém a última versão conhecida se a fonte estiver temporariamente indisponível.
+      }
+    };
+
+    refreshWebVersion();
+    const intervalId = window.setInterval(refreshWebVersion, 5 * 60 * 1000);
+
+    return () => {
+      disposed = true;
+      window.clearInterval(intervalId);
+    };
+  }, []);
 
   useEffect(() => {
     fetch('https://api.github.com/repos/michel-softwares/track-concursos/releases/latest')
@@ -234,7 +293,7 @@ function HomePage({ goTo }) {
             <a className="web-cta-button" href="https://trackconcursos.vercel.app/" target="_blank" rel="noreferrer">
               <span>
                 <strong>Track Concursos online</strong>
-                <small>Versão 1.1.54</small>
+                <small>{webVersion ? `Versão ${webVersion}` : 'Consultando versão...'}</small>
               </span>
               <img className="hero-cta-logo" src="./assets/track-logo.png" alt="" />
             </a>
